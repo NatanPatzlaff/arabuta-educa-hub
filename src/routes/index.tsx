@@ -419,22 +419,10 @@ function Index() {
           </div>
 
           <div className={`${cell("branco")} lg:col-span-6 lg:col-start-7`}>
-            <Label htmlFor="cpf" className="text-base font-semibold text-tinta">
-              CPF
-            </Label>
-            <Input
-              id="cpf"
-              name="cpf"
-              inputMode="numeric"
-              autoComplete="off"
-              placeholder="000.000.000-00"
-              className="mt-2 h-14 rounded-xl bg-background text-base"
+            <ConsultaCpf
+              onEncontrado={() => navigate({ to: "/relato" })}
+              onNaoEncontrado={() => navigate({ to: "/relato" })}
             />
-            {/* Validação e envio serão implementados na próxima etapa. */}
-            <Button variant="acao" size="xl" className="mt-5 w-full" disabled>
-              Continuar
-            </Button>
-            <p className="mt-2 text-sm text-ferro">Disponível em breve</p>
           </div>
         </div>
       </section>

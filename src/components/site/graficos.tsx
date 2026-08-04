@@ -62,8 +62,7 @@ export function OndaJacutinga({ className = "" }: { className?: string }) {
       <path d="M0 20c60-16 120-16 180 0s120 16 180 0 120-16 180 0 120 16 180 0 120-16 180 0 120 16 180 0 120-16 180 0" />
       <path
         d="M0 30c60-16 120-16 180 0s120 16 180 0 120-16 180 0 120 16 180 0 120-16 180 0 120 16 180 0 120-16 180 0"
-        opacity="0.25"
-        stroke="var(--listel)"
+        opacity="0.5"
       />
     </svg>
   );

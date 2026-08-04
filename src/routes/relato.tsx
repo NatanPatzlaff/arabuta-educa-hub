@@ -391,17 +391,31 @@ function PaginaRelato() {
     );
   };
 
+  const emProleei =
+    !!sessao &&
+    !sessao.nao_vai_enviar &&
+    (escolha === "proleei" || (sessao.pode_proleei && !sessao.pode_mostra));
+
   return (
     <main className="bg-background section-pad">
       <div className="container-site grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-6">
         <div className="lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
           <FolhaDivisor className="mb-6" />
-          <h1 className="text-3xl text-tinta sm:text-4xl">Enviar meu relato</h1>
+          <h1 className="text-3xl text-tinta sm:text-4xl">
+            {emProleei ? "Relato institucional do ProLEEI" : "Enviar meu relato"}
+          </h1>
           <AvisoPrazo />
-          <p className="medida mt-4 text-base text-ferro">
-            O relato só é aceito por este site. Não são aceitos relatos por WhatsApp, e-mail ou
-            impressos.
-          </p>
+          {emProleei ? (
+            <p className="medida mt-4 text-base text-ferro">
+              É um relato por unidade de educação infantil. Se a sua unidade já enviou, fale com a
+              organização antes de enviar outro.
+            </p>
+          ) : (
+            <p className="medida mt-4 text-base text-ferro">
+              O relato só é aceito por este site. Não são aceitos relatos por WhatsApp, e-mail ou
+              impressos.
+            </p>
+          )}
         </div>
 
         <div className="lg:col-span-7 lg:col-start-6">{conteudo()}</div>

@@ -266,15 +266,30 @@ function Index() {
         <div className="mx-auto max-w-5xl">
           <h2 className="text-center text-2xl text-tinta sm:text-3xl">Datas importantes</h2>
           <ol className="mt-10 flex flex-col gap-6 md:flex-row md:gap-4">
-            {datas.map((d) => (
-              <li
-                key={d.dia}
-                className="flex flex-1 items-center gap-4 border-l-4 border-listel pl-4 md:flex-col md:border-l-0 md:border-t-4 md:pl-0 md:pt-4 md:text-center"
-              >
-                <span className="text-2xl font-bold text-listel">{d.dia}</span>
-                <span className="text-base text-tinta">{d.texto}</span>
-              </li>
-            ))}
+            {datas.map((d) => {
+              const destaque = d.dia === "23/08";
+              return (
+                <li
+                  key={d.dia}
+                  className={
+                    destaque
+                      ? "flex flex-1 items-center gap-4 rounded-xl bg-tinta p-4 md:flex-col md:text-center"
+                      : "flex flex-1 items-center gap-4 border-l-4 border-listel pl-4 md:flex-col md:border-l-0 md:border-t-4 md:pl-0 md:pt-4 md:text-center"
+                  }
+                >
+                  <span
+                    className={
+                      destaque ? "text-2xl font-bold text-sol" : "text-2xl font-bold text-listel"
+                    }
+                  >
+                    {d.dia}
+                  </span>
+                  <span className={destaque ? "text-base text-tinta-foreground" : "text-base text-tinta"}>
+                    {d.texto}
+                  </span>
+                </li>
+              );
+            })}
           </ol>
         </div>
       </section>

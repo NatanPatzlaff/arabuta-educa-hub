@@ -150,12 +150,73 @@ function SucessoMostra({
 
 type Escolha = "mostra" | "proleei" | null;
 
+function SucessoProleei({
+  resultado,
+  podeMostra,
+  aoIrMostra,
+}: {
+  resultado: ResultadoProleei;
+  podeMostra: boolean;
+  aoIrMostra: () => void;
+}) {
+  return (
+    <div>
+      <div className="rounded-xl bg-tinta p-6 text-center sm:p-8">
+        <p className="text-sm font-semibold uppercase tracking-wide text-white/70">
+          Código do relato da unidade
+        </p>
+        <p className="mt-2 text-5xl font-bold text-sol sm:text-6xl">{resultado.codigo}</p>
+        <p className="mt-4 text-base text-white">
+          Guarde este código. É por ele que a organização identifica o relato da sua unidade.
+        </p>
+      </div>
+
+      <dl className="mt-6 space-y-3 text-base">
+        <div>
+          <dt className="text-sm font-semibold text-ferro">Unidade</dt>
+          <dd className="text-tinta">{resultado.nome_unidade}</dd>
+        </div>
+        <div>
+          <dt className="text-sm font-semibold text-ferro">Título enviado</dt>
+          <dd className="text-tinta">{resultado.titulo}</dd>
+        </div>
+        <div>
+          <dt className="text-sm font-semibold text-ferro">Participantes cadastrados</dt>
+          <dd className="text-tinta">
+            {resultado.participantes}{" "}
+            {resultado.participantes === 1 ? "participante" : "participantes"}
+          </dd>
+        </div>
+      </dl>
+
+      <p className="medida mt-6 text-base text-ferro">
+        O e-mail automático de confirmação será enviado assim que o endereço oficial do evento
+        estiver ativo. Enquanto isso, este código é o comprovante do seu envio. Em caso de dúvida,
+        fale com a organização pelo WhatsApp {WHATS_ORG}.
+      </p>
+
+      {podeMostra && (
+        <div className="mt-6">
+          <p className="medida text-base text-ferro">
+            Você também pode enviar o seu relato individual da Mostra. Os dois envios são
+            independentes.
+          </p>
+          <Button variant="contorno" size="xl" className="mt-4" onClick={aoIrMostra}>
+            Enviar meu relato da Mostra
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function PaginaRelato() {
   const [sessao, setSessao] = React.useState<SessaoRelato | null>(null);
   const [naoEncontrado, setNaoEncontrado] = React.useState(false);
   const [escolha, setEscolha] = React.useState<Escolha>(null);
   const [prazoEncerrado, setPrazoEncerrado] = React.useState(false);
   const [sucesso, setSucesso] = React.useState<ResultadoMostra | null>(null);
+  const [sucessoProleei, setSucessoProleei] = React.useState<ResultadoProleei | null>(null);
 
   React.useEffect(() => {
     setSessao(lerSessaoRelato());
@@ -168,6 +229,7 @@ function PaginaRelato() {
     setEscolha(null);
     setNaoEncontrado(false);
     setSucesso(null);
+    setSucessoProleei(null);
   };
 
   const conteudo = () => {

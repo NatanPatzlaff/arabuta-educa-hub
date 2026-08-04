@@ -127,21 +127,31 @@ function Index() {
           <p className="mt-3 inline-block rounded-md bg-sol-suave px-3 py-1.5 border-l-4 border-sol text-sm font-semibold text-sol-foreground">
             Programação preliminar, sujeita a ajustes.
           </p>
-          <ol className="mt-8 space-y-4">
+          <ol className="relative mt-8 border-l border-cinza pl-6">
             {programacao.map((item, i) => (
-              <li
-                key={i}
-                className="flex gap-4 rounded-xl border border-border bg-card p-5 shadow-sm"
-              >
-                <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-listel text-sm font-semibold text-listel-foreground">
-                  {i + 1}
-                </span>
-                <div>
-                  {item.hora && (
-                    <p className="text-sm font-semibold text-tinta">{item.hora}</p>
-                  )}
-                  <p className="text-base leading-relaxed text-tinta">{item.texto}</p>
-                </div>
+              <li key={i} className={item.pausa ? "relative py-3 pl-2" : "relative py-4"}>
+                <span
+                  aria-hidden="true"
+                  className={
+                    item.pausa
+                      ? "absolute -left-[1.6rem] top-[1.15rem] h-2 w-2 rounded-full bg-cinza"
+                      : item.hora
+                        ? "absolute -left-[1.84rem] top-[1.35rem] h-3 w-3 rounded-full bg-listel"
+                        : "absolute -left-[1.84rem] top-[1.35rem] h-3 w-3 rounded-full border-2 border-listel bg-background"
+                  }
+                />
+                {item.hora && (
+                  <p className="text-sm font-bold text-listel">{item.hora}</p>
+                )}
+                <p
+                  className={
+                    item.pausa
+                      ? "text-sm text-ferro"
+                      : "text-base font-medium leading-relaxed text-tinta"
+                  }
+                >
+                  {item.texto}
+                </p>
               </li>
             ))}
           </ol>

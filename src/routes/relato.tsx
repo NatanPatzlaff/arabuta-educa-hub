@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { FolhaDivisor } from "@/components/site/graficos";
 import { ConsultaCpf, WHATS_LINK, WHATS_ORG } from "@/components/site/consulta-cpf";
 import { FormularioMostra, type ResultadoMostra } from "@/components/site/formulario-mostra";
+import { FormularioProleei, type ResultadoProleei } from "@/components/site/formulario-proleei";
 import { lerSessaoRelato, limparSessaoRelato, type SessaoRelato } from "@/lib/sessao-relato";
 
 const DESC =
@@ -74,15 +75,6 @@ function Saudacao({ nome, aoTrocar }: { nome: string; aoTrocar: () => void }) {
       >
         Não é você? Consultar outro CPF
       </button>
-    </div>
-  );
-}
-
-function Placeholder({ titulo }: { titulo: string }) {
-  return (
-    <div className="rounded-xl border border-cinza bg-neve p-6 sm:p-8">
-      <h2 className="text-2xl text-tinta">{titulo}</h2>
-      <p className="mt-3 text-base text-ferro">Em construção.</p>
     </div>
   );
 }
@@ -158,12 +150,73 @@ function SucessoMostra({
 
 type Escolha = "mostra" | "proleei" | null;
 
+function SucessoProleei({
+  resultado,
+  podeMostra,
+  aoIrMostra,
+}: {
+  resultado: ResultadoProleei;
+  podeMostra: boolean;
+  aoIrMostra: () => void;
+}) {
+  return (
+    <div>
+      <div className="rounded-xl bg-tinta p-6 text-center sm:p-8">
+        <p className="text-sm font-semibold uppercase tracking-wide text-white/70">
+          Código do relato da unidade
+        </p>
+        <p className="mt-2 text-5xl font-bold text-sol sm:text-6xl">{resultado.codigo}</p>
+        <p className="mt-4 text-base text-white">
+          Guarde este código. É por ele que a organização identifica o relato da sua unidade.
+        </p>
+      </div>
+
+      <dl className="mt-6 space-y-3 text-base">
+        <div>
+          <dt className="text-sm font-semibold text-ferro">Unidade</dt>
+          <dd className="text-tinta">{resultado.nome_unidade}</dd>
+        </div>
+        <div>
+          <dt className="text-sm font-semibold text-ferro">Título enviado</dt>
+          <dd className="text-tinta">{resultado.titulo}</dd>
+        </div>
+        <div>
+          <dt className="text-sm font-semibold text-ferro">Participantes cadastrados</dt>
+          <dd className="text-tinta">
+            {resultado.participantes}{" "}
+            {resultado.participantes === 1 ? "participante" : "participantes"}
+          </dd>
+        </div>
+      </dl>
+
+      <p className="medida mt-6 text-base text-ferro">
+        O e-mail automático de confirmação será enviado assim que o endereço oficial do evento
+        estiver ativo. Enquanto isso, este código é o comprovante do seu envio. Em caso de dúvida,
+        fale com a organização pelo WhatsApp {WHATS_ORG}.
+      </p>
+
+      {podeMostra && (
+        <div className="mt-6">
+          <p className="medida text-base text-ferro">
+            Você também pode enviar o seu relato individual da Mostra. Os dois envios são
+            independentes.
+          </p>
+          <Button variant="contorno" size="xl" className="mt-4" onClick={aoIrMostra}>
+            Enviar meu relato da Mostra
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function PaginaRelato() {
   const [sessao, setSessao] = React.useState<SessaoRelato | null>(null);
   const [naoEncontrado, setNaoEncontrado] = React.useState(false);
   const [escolha, setEscolha] = React.useState<Escolha>(null);
   const [prazoEncerrado, setPrazoEncerrado] = React.useState(false);
   const [sucesso, setSucesso] = React.useState<ResultadoMostra | null>(null);
+  const [sucessoProleei, setSucessoProleei] = React.useState<ResultadoProleei | null>(null);
 
   React.useEffect(() => {
     setSessao(lerSessaoRelato());
@@ -176,6 +229,7 @@ function PaginaRelato() {
     setEscolha(null);
     setNaoEncontrado(false);
     setSucesso(null);
+    setSucessoProleei(null);
   };
 
   const conteudo = () => {
@@ -273,7 +327,21 @@ function PaginaRelato() {
         }
         return <FormularioMostra sessao={sessao} onSucesso={setSucesso} />;
       }
-      if (proleeiSo || escolha === "proleei") return <Placeholder titulo="Formulário do ProLEEI" />;
+      if (proleeiSo || escolha === "proleei") {
+        if (sucessoProleei) {
+          return (
+            <SucessoProleei
+              resultado={sucessoProleei}
+              podeMostra={sessao.pode_mostra}
+              aoIrMostra={() => {
+                setSucessoProleei(null);
+                setEscolha("mostra");
+              }}
+            />
+          );
+        }
+        return <FormularioProleei sessao={sessao} onSucesso={setSucessoProleei} />;
+      }
 
       return (
         <div>
@@ -323,17 +391,31 @@ function PaginaRelato() {
     );
   };
 
+  const emProleei =
+    !!sessao &&
+    !sessao.nao_vai_enviar &&
+    (escolha === "proleei" || (sessao.pode_proleei && !sessao.pode_mostra));
+
   return (
     <main className="bg-background section-pad">
       <div className="container-site grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-6">
         <div className="lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
           <FolhaDivisor className="mb-6" />
-          <h1 className="text-3xl text-tinta sm:text-4xl">Enviar meu relato</h1>
+          <h1 className="text-3xl text-tinta sm:text-4xl">
+            {emProleei ? "Relato institucional do ProLEEI" : "Enviar meu relato"}
+          </h1>
           <AvisoPrazo />
-          <p className="medida mt-4 text-base text-ferro">
-            O relato só é aceito por este site. Não são aceitos relatos por WhatsApp, e-mail ou
-            impressos.
-          </p>
+          {emProleei ? (
+            <p className="medida mt-4 text-base text-ferro">
+              É um relato por unidade de educação infantil. Se a sua unidade já enviou, fale com a
+              organização antes de enviar outro.
+            </p>
+          ) : (
+            <p className="medida mt-4 text-base text-ferro">
+              O relato só é aceito por este site. Não são aceitos relatos por WhatsApp, e-mail ou
+              impressos.
+            </p>
+          )}
         </div>
 
         <div className="lg:col-span-7 lg:col-start-6">{conteudo()}</div>

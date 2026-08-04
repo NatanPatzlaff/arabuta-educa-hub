@@ -329,6 +329,18 @@ export type Database = {
         }
         Returns: string
       }
+      submeter_relato_proleei: {
+        Args: {
+          p_declaracao: boolean
+          p_docx_path: string
+          p_imagens: string[]
+          p_inscricao_id: string
+          p_nome_unidade: string
+          p_participantes: Json
+          p_titulo: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       categoria_relato: "gestao" | "educacao_infantil" | "ensino_fundamental"

@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { FolhaDivisor } from "@/components/site/graficos";
 import { ConsultaCpf, WHATS_LINK, WHATS_ORG } from "@/components/site/consulta-cpf";
+import { FormularioMostra, type ResultadoMostra } from "@/components/site/formulario-mostra";
 import { lerSessaoRelato, limparSessaoRelato, type SessaoRelato } from "@/lib/sessao-relato";
 
 const DESC =
@@ -86,6 +87,75 @@ function Placeholder({ titulo }: { titulo: string }) {
   );
 }
 
+const ROTULO_CATEGORIA: Record<string, string> = {
+  gestao: "Gestão",
+  educacao_infantil: "Educação Infantil",
+  ensino_fundamental: "Ensino Fundamental",
+};
+
+const ROTULO_MODO: Record<string, string> = {
+  palco: "Quero concorrer à apresentação",
+  ebook: "Só quero aparecer no e-book",
+};
+
+function SucessoMostra({
+  resultado,
+  podeProleei,
+  aoEnviarOutro,
+  aoIrProleei,
+}: {
+  resultado: ResultadoMostra;
+  podeProleei: boolean;
+  aoEnviarOutro: () => void;
+  aoIrProleei: () => void;
+}) {
+  return (
+    <div>
+      <div className="rounded-xl bg-tinta p-6 text-center sm:p-8">
+        <p className="text-sm font-semibold uppercase tracking-wide text-white/70">
+          Código do seu relato
+        </p>
+        <p className="mt-2 text-5xl font-bold text-sol sm:text-6xl">{resultado.codigo}</p>
+        <p className="mt-4 text-base text-white">
+          Guarde este código. É por ele que a organização identifica o seu relato.
+        </p>
+      </div>
+
+      <dl className="mt-6 space-y-3 text-base">
+        <div>
+          <dt className="text-sm font-semibold text-ferro">Título enviado</dt>
+          <dd className="text-tinta">{resultado.titulo}</dd>
+        </div>
+        <div>
+          <dt className="text-sm font-semibold text-ferro">Categoria</dt>
+          <dd className="text-tinta">{ROTULO_CATEGORIA[resultado.categoria]}</dd>
+        </div>
+        <div>
+          <dt className="text-sm font-semibold text-ferro">Participação</dt>
+          <dd className="text-tinta">{ROTULO_MODO[resultado.modo]}</dd>
+        </div>
+      </dl>
+
+      <p className="medida mt-6 text-base text-ferro">
+        O e-mail automático de confirmação será enviado assim que o endereço oficial do evento
+        estiver ativo. Enquanto isso, este código é o comprovante do seu envio. Em caso de dúvida,
+        fale com a organização pelo WhatsApp {WHATS_ORG}.
+      </p>
+
+      <div className="mt-6 flex flex-wrap gap-4">
+        <Button variant="acao" size="xl" onClick={aoEnviarOutro}>
+          Enviar outro relato
+        </Button>
+        {podeProleei && (
+          <Button variant="contorno" size="xl" onClick={aoIrProleei}>
+            Enviar o relato do ProLEEI
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 type Escolha = "mostra" | "proleei" | null;
 
 function PaginaRelato() {
@@ -93,6 +163,7 @@ function PaginaRelato() {
   const [naoEncontrado, setNaoEncontrado] = React.useState(false);
   const [escolha, setEscolha] = React.useState<Escolha>(null);
   const [prazoEncerrado, setPrazoEncerrado] = React.useState(false);
+  const [sucesso, setSucesso] = React.useState<ResultadoMostra | null>(null);
 
   React.useEffect(() => {
     setSessao(lerSessaoRelato());
@@ -104,6 +175,7 @@ function PaginaRelato() {
     setSessao(null);
     setEscolha(null);
     setNaoEncontrado(false);
+    setSucesso(null);
   };
 
   const conteudo = () => {
@@ -185,7 +257,22 @@ function PaginaRelato() {
       const mostraSo = sessao.pode_mostra && !sessao.pode_proleei;
       const proleeiSo = sessao.pode_proleei && !sessao.pode_mostra;
 
-      if (mostraSo || escolha === "mostra") return <Placeholder titulo="Formulário da Mostra" />;
+      if (mostraSo || escolha === "mostra") {
+        if (sucesso) {
+          return (
+            <SucessoMostra
+              resultado={sucesso}
+              podeProleei={sessao.pode_proleei}
+              aoEnviarOutro={() => setSucesso(null)}
+              aoIrProleei={() => {
+                setSucesso(null);
+                setEscolha("proleei");
+              }}
+            />
+          );
+        }
+        return <FormularioMostra sessao={sessao} onSucesso={setSucesso} />;
+      }
       if (proleeiSo || escolha === "proleei") return <Placeholder titulo="Formulário do ProLEEI" />;
 
       return (

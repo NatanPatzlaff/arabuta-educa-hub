@@ -13,7 +13,7 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Summit de Educação de Arabutã · 8 de setembro de 2026" },
       { name: "description", content: DESC },
-      { property: "og:title", content: "Summit de Educação de Arabutã" },
+      { property: "og:title", content: "Summit de Educação de Arabutã · 8 de setembro de 2026" },
       { property: "og:description", content: DESC },
     ],
   }),

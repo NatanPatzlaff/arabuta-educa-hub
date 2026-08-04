@@ -80,6 +80,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: "Comissão Organizadora — Summit de Educação de Arabutã" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { title: "Summit de Educação de Arabutã · 8 de setembro de 2026" },
+      { property: "og:title", content: "Summit de Educação de Arabutã · 8 de setembro de 2026" },
+      { name: "twitter:title", content: "Summit de Educação de Arabutã · 8 de setembro de 2026" },
+      { name: "description", content: "Landing page for the Arabutã Education Summit, a static site detailing event information and program." },
+      { property: "og:description", content: "Landing page for the Arabutã Education Summit, a static site detailing event information and program." },
+      { name: "twitter:description", content: "Landing page for the Arabutã Education Summit, a static site detailing event information and program." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/227c40a5-e70f-44d2-997e-790efbdf8554/id-preview-4a483568--de04425a-2f73-483f-99df-71e01e819f29.lovable.app-1785861318353.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/227c40a5-e70f-44d2-997e-790efbdf8554/id-preview-4a483568--de04425a-2f73-483f-99df-71e01e819f29.lovable.app-1785861318353.png" },
     ],
     links: [
       {

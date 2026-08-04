@@ -210,3 +210,24 @@
 @utility section-pad {
   padding-block: 4.5rem;
 }
+
+/* Container padrão do site */
+@utility container-site {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 1200px;
+  padding-inline: 1.5rem;
+
+  @media (min-width: 1024px) {
+    padding-inline: 2.5rem;
+  }
+
+  @media (min-width: 1440px) {
+    max-width: 1320px;
+  }
+}
+
+/* Medida de leitura: texto corrido nunca passa de 68ch */
+@utility medida {
+  max-width: 68ch;
+}

@@ -88,7 +88,7 @@ function Index() {
             </Button>
           </div>
         </div>
-        <OndaJacutinga className="absolute inset-x-0 bottom-0 h-6 w-full text-listel/50" />
+        <OndaJacutinga className="absolute inset-x-0 bottom-0 h-6 w-full text-tinta-foreground/20" />
       </header>
 
       {/* 2. EPÍGRAFE */}
@@ -122,7 +122,7 @@ function Index() {
       <section className="px-6 section-pad">
         <div className="mx-auto max-w-2xl">
           <h2 className="text-2xl text-tinta sm:text-3xl">Programação</h2>
-          <p className="mt-3 inline-block rounded-md bg-sol px-3 py-1.5 text-sm font-semibold text-sol-foreground">
+          <p className="mt-3 inline-block rounded-md bg-sol-suave px-3 py-1.5 border-l-4 border-sol text-sm font-semibold text-sol-foreground">
             Programação preliminar, sujeita a ajustes.
           </p>
           <ol className="mt-8 space-y-4">
@@ -179,7 +179,7 @@ function Index() {
           </p>
 
           {/* 6. Bloco ProLEEI */}
-          <div className="mt-10 rounded-2xl border-2 border-cinza/40 bg-card p-6">
+          <div className="mt-10 rounded-2xl border-2 border-cinza bg-card p-6">
             <h3 className="text-xl text-tinta">ProLEEI</h3>
             <p className="mt-3 text-base leading-relaxed text-tinta">
               Unidades de educação infantil que fizeram a formação do ProLEEI enviam um relato
@@ -255,7 +255,7 @@ function Index() {
                 key={d.dia}
                 className="flex flex-1 items-center gap-4 border-l-4 border-listel pl-4 md:flex-col md:border-l-0 md:border-t-4 md:pl-0 md:pt-4 md:text-center"
               >
-                <span className="text-2xl font-bold text-tinta">{d.dia}</span>
+                <span className="text-2xl font-bold text-listel">{d.dia}</span>
                 <span className="text-base text-tinta">{d.texto}</span>
               </li>
             ))}
@@ -322,7 +322,7 @@ function Index() {
             )}
           </div>
 
-          <OndaJacutinga className="mt-10 h-5 w-full text-sol/50" />
+          <OndaJacutinga className="mt-10 h-5 w-full text-tinta-foreground/20" />
 
           <p className="mt-8 text-sm">
             <Link to="/privacidade" className="underline">

@@ -1,8 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Award, BookOpen, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { FolhaDivisor, OndaJacutinga, RaiosDeSol } from "@/components/site/graficos";
 import { BarraFixa } from "@/components/site/barra-fixa";
 import { ConsultaCpf } from "@/components/site/consulta-cpf";

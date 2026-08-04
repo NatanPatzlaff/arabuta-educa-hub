@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { FolhaDivisor } from "@/components/site/graficos";
 import { ConsultaCpf, WHATS_LINK, WHATS_ORG } from "@/components/site/consulta-cpf";
@@ -89,7 +89,6 @@ function Placeholder({ titulo }: { titulo: string }) {
 type Escolha = "mostra" | "proleei" | null;
 
 function PaginaRelato() {
-  const navigate = useNavigate();
   const [sessao, setSessao] = React.useState<SessaoRelato | null>(null);
   const [naoEncontrado, setNaoEncontrado] = React.useState(false);
   const [escolha, setEscolha] = React.useState<Escolha>(null);
@@ -236,11 +235,6 @@ function PaginaRelato() {
       </div>
     );
   };
-
-  React.useEffect(() => {
-    if (typeof window === "undefined") return;
-    void navigate;
-  }, [navigate]);
 
   return (
     <main className="bg-background section-pad">

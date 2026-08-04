@@ -10,7 +10,7 @@ export function BarraFixa() {
     const hero = document.getElementById("hero");
     if (!hero) return;
     const obs = new IntersectionObserver(
-      ([entry]) => setVisivel(!entry.isIntersecting),
+      (entries) => setVisivel(!(entries[0]?.isIntersecting ?? true)),
       { threshold: 0 },
     );
     obs.observe(hero);

@@ -1,10 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Award, BookOpen, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FolhaDivisor, OndaJacutinga, RaiosDeSol } from "@/components/site/graficos";
 import { BarraFixa } from "@/components/site/barra-fixa";
+import { ConsultaCpf } from "@/components/site/consulta-cpf";
 
 const DESC =
   "Um dia inteiro de formação para os profissionais da educação de Arabutã (SC). 8 de setembro de 2026, no Centro Educacional Esportivo e Cultural.";
@@ -123,6 +124,7 @@ function RotuloPeriodo({ children }: { children: string }) {
 }
 
 function Index() {
+  const navigate = useNavigate();
   return (
     <main className="bg-background">
       <BarraFixa />

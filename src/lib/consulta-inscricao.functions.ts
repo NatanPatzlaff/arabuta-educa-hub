@@ -1,4 +1,5 @@
-import { createServerFn, getRequestHeader } from "@tanstack/react-start";
+import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 import { apenasDigitos, cpfValido } from "@/lib/formatos";
 
 export type ConsultaResposta =
@@ -26,11 +27,13 @@ export const consultarInscricao = createServerFn({ method: "POST" })
     const cpf = apenasDigitos(data.cpf);
     if (!cpfValido(cpf)) return { erro: "cpf_invalido" };
 
-    const ip =
-      (getRequestHeader("cf-connecting-ip") ||
-        getRequestHeader("x-forwarded-for")?.split(",")[0] ||
-        getRequestHeader("x-real-ip") ||
-        "desconhecido").trim();
+    const cabecalhos = getRequest().headers;
+    const ip = (
+      cabecalhos.get("cf-connecting-ip") ||
+      cabecalhos.get("x-forwarded-for")?.split(",")[0] ||
+      cabecalhos.get("x-real-ip") ||
+      "desconhecido"
+    ).trim();
 
     try {
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");

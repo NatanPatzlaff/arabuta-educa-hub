@@ -44,6 +44,8 @@ type CampoErro =
   | "relato"
   | "lgpd";
 
+type Erros = { [K in CampoErro]?: string | undefined };
+
 const rotuloCampo = "block text-sm font-semibold text-tinta";
 const campoBase =
   "mt-2 h-14 w-full rounded-xl border bg-background px-4 text-base text-tinta outline-none transition-colors placeholder:text-ferro focus:border-tinta";
@@ -80,7 +82,7 @@ function FormularioInscricao({
   const [naoEnvia, setNaoEnvia] = React.useState(false);
   const [lgpd, setLgpd] = React.useState(false);
 
-  const [erros, setErros] = React.useState<Partial<Record<CampoErro, string>>>({});
+  const [erros, setErros] = React.useState<Erros>({});
   const [enviando, setEnviando] = React.useState(false);
   const [erroGeral, setErroGeral] = React.useState("");
 
@@ -160,7 +162,7 @@ function FormularioInscricao({
       "relato",
       "lgpd",
     ];
-    const novos: Partial<Record<CampoErro, string>> = {};
+    const novos: Erros = {};
     for (const campo of ordem) {
       const msg = validaCampo(campo);
       if (msg) novos[campo] = msg;

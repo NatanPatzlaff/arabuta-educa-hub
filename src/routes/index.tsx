@@ -64,7 +64,7 @@ function Index() {
   return (
     <main className="bg-background">
       {/* 1. HERO */}
-      <header className="relative overflow-hidden bg-mata px-6 pb-16 pt-14 text-mata-foreground sm:pt-16">
+      <header className="relative overflow-hidden bg-tinta px-6 pb-16 pt-14 text-tinta-foreground sm:pt-16">
         <RaiosDeSol className="pointer-events-none absolute -top-6 left-1/2 h-16 w-56 -translate-x-1/2 text-sol/60" />
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-sol">
@@ -73,31 +73,31 @@ function Index() {
           <h1 className="mt-4 text-4xl leading-tight sm:text-5xl">
             Summit de Educação de Arabutã
           </h1>
-          <p className="mt-4 text-lg text-mata-foreground/90">
+          <p className="mt-4 text-lg text-tinta-foreground/90">
             Encontro de pessoas, práticas e ideias que movimentam a educação
           </p>
-          <p className="mt-6 text-base text-mata-foreground/80">
+          <p className="mt-6 text-base text-tinta-foreground/80">
             8 de setembro de 2026 · Centro Educacional Esportivo e Cultural · Arabutã (SC)
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
             <Button asChild variant="acao" size="xl" className="w-full sm:w-auto">
               <Link to="/inscricao">Quero me inscrever</Link>
             </Button>
-            <Button asChild variant="campo" size="xl" className="w-full sm:w-auto">
+            <Button asChild variant="contorno" size="xl" className="w-full sm:w-auto">
               <a href="#envio-relato">Enviar meu relato</a>
             </Button>
           </div>
         </div>
-        <OndaJacutinga className="absolute inset-x-0 bottom-0 h-6 w-full text-ceu/50" />
+        <OndaJacutinga className="absolute inset-x-0 bottom-0 h-6 w-full text-tinta-foreground/20" />
       </header>
 
       {/* 2. EPÍGRAFE */}
-      <section className="bg-areia px-6 py-14">
+      <section className="bg-neve px-6 py-14">
         <blockquote className="mx-auto max-w-2xl text-center">
-          <p className="epigrafe text-2xl leading-relaxed text-terra sm:text-3xl">
+          <p className="epigrafe text-2xl leading-relaxed text-tinta sm:text-3xl">
             “Nos exemplos do passado construímos o amanhã.”
           </p>
-          <footer className="mt-4 text-sm text-grafite">
+          <footer className="mt-4 text-sm text-tinta">
             — Hino de Arabutã, José Acácio Santana
           </footer>
         </blockquote>
@@ -106,8 +106,8 @@ function Index() {
       {/* 3. O QUE É O SUMMIT */}
       <section className="px-6 section-pad">
         <div className="mx-auto max-w-2xl">
-          <h2 className="text-2xl text-mata sm:text-3xl">O que é o Summit</h2>
-          <p className="mt-5 text-lg leading-relaxed text-grafite">
+          <h2 className="text-2xl text-tinta sm:text-3xl">O que é o Summit</h2>
+          <p className="mt-5 text-lg leading-relaxed text-tinta">
             Um dia inteiro de formação para os profissionais da educação de Arabutã. A programação
             reúne palestras, a apresentação de práticas desenvolvidas por professores da própria
             rede e a premiação das experiências selecionadas. Quem participar dos dois períodos
@@ -121,8 +121,8 @@ function Index() {
       {/* 4. PROGRAMAÇÃO */}
       <section className="px-6 section-pad">
         <div className="mx-auto max-w-2xl">
-          <h2 className="text-2xl text-mata sm:text-3xl">Programação</h2>
-          <p className="mt-3 inline-block rounded-md bg-sol px-3 py-1.5 text-sm font-semibold text-sol-foreground">
+          <h2 className="text-2xl text-tinta sm:text-3xl">Programação</h2>
+          <p className="mt-3 inline-block rounded-md bg-sol-suave px-3 py-1.5 border-l-4 border-sol text-sm font-semibold text-sol-foreground">
             Programação preliminar, sujeita a ajustes.
           </p>
           <ol className="mt-8 space-y-4">
@@ -131,14 +131,14 @@ function Index() {
                 key={i}
                 className="flex gap-4 rounded-xl border border-border bg-card p-5 shadow-sm"
               >
-                <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-campo text-sm font-semibold text-campo-foreground">
+                <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-listel text-sm font-semibold text-listel-foreground">
                   {i + 1}
                 </span>
                 <div>
                   {item.hora && (
-                    <p className="text-sm font-semibold text-terra">{item.hora}</p>
+                    <p className="text-sm font-semibold text-tinta">{item.hora}</p>
                   )}
-                  <p className="text-base leading-relaxed text-grafite">{item.texto}</p>
+                  <p className="text-base leading-relaxed text-tinta">{item.texto}</p>
                 </div>
               </li>
             ))}
@@ -147,51 +147,55 @@ function Index() {
       </section>
 
       {/* 5. MOSTRA DE PRÁTICAS EXITOSAS + 6. ProLEEI */}
-      <section className="bg-areia px-6 section-pad">
+      <section className="bg-neve px-6 section-pad">
         <div className="mx-auto max-w-2xl">
-          <h2 className="text-2xl text-mata sm:text-3xl">Mostra de Práticas Exitosas</h2>
-          <p className="mt-5 text-lg leading-relaxed text-grafite">
+          <h2 className="text-2xl text-tinta sm:text-3xl">Mostra de Práticas Exitosas</h2>
+          <p className="mt-5 text-lg leading-relaxed text-tinta">
             Se você desenvolveu uma prática que deu certo na sua sala ou na sua unidade, conte para
-            a gente. Quem tem o relato selecionado recebe certificado de 15 horas em vez de 8, tem o
-            trabalho publicado no e-book do Summit e a chance de apresentar no palco.
+            a gente. Quem tem o relato selecionado recebe{" "}
+            <mark className="bg-sol-suave px-1 font-semibold text-sol-foreground">
+              certificado de 15 horas
+            </mark>{" "}
+            em vez de 8, tem o trabalho publicado no e-book do Summit e a chance de apresentar no
+            palco.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             {/* TODO: trocar o botão desabilitado por <a href="/docs/regulamento.pdf" download> quando o PDF estiver disponível */}
             <div className="flex-1">
-              <Button variant="terra" size="xl" className="w-full" disabled>
+              <Button variant="contorno" size="xl" className="w-full" disabled>
                 Baixar o Regulamento (PDF)
               </Button>
               <p className="mt-2 text-center text-sm text-muted-foreground">Disponível em breve</p>
             </div>
             {/* TODO: trocar por <a href="/docs/convite.pdf" download> quando o PDF estiver disponível */}
             <div className="flex-1">
-              <Button variant="terra" size="xl" className="w-full" disabled>
+              <Button variant="contorno" size="xl" className="w-full" disabled>
                 Baixar o Convite (PDF)
               </Button>
               <p className="mt-2 text-center text-sm text-muted-foreground">Disponível em breve</p>
             </div>
           </div>
 
-          <p className="mt-8 rounded-xl border-l-4 border-listel bg-card p-5 text-base font-semibold text-grafite">
+          <p className="mt-8 rounded-xl border-l-4 border-listel bg-card p-5 text-base font-semibold text-tinta">
             O relato só é aceito pela aba de submissão deste site. Não são aceitos relatos por
             WhatsApp, e-mail ou impressos.
           </p>
 
           {/* 6. Bloco ProLEEI */}
-          <div className="mt-10 rounded-2xl border-2 border-terra/40 bg-card p-6">
-            <h3 className="text-xl text-mata">ProLEEI</h3>
-            <p className="mt-3 text-base leading-relaxed text-grafite">
+          <div className="mt-10 rounded-2xl border-2 border-cinza bg-card p-6">
+            <h3 className="text-xl text-tinta">ProLEEI</h3>
+            <p className="mt-3 text-base leading-relaxed text-tinta">
               Unidades de educação infantil que fizeram a formação do ProLEEI enviam um relato
               institucional por unidade, com formato livre e caminho próprio.
             </p>
             {/* TODO: trocar por <a href="/docs/convite-proleei.pdf" download> quando o PDF estiver disponível */}
-            <Button variant="terra" size="xl" className="mt-6 w-full sm:w-auto" disabled>
+            <Button variant="contorno" size="xl" className="mt-6 w-full sm:w-auto" disabled>
               Baixar o Convite do ProLEEI (PDF)
             </Button>
             <p className="mt-2 text-sm text-muted-foreground">Disponível em breve</p>
             <p className="mt-4">
-              <a href="#mostra-regulamento" className="font-semibold text-ceu underline">
+              <a href="#mostra-regulamento" className="font-semibold text-listel underline">
                 Ver a seção 3 do regulamento
               </a>
             </p>
@@ -203,29 +207,29 @@ function Index() {
       {/* 7. COMO ESCREVER SEU RELATO */}
       <section className="px-6 section-pad">
         <div className="mx-auto max-w-2xl">
-          <h2 className="text-2xl text-mata sm:text-3xl">Como escrever seu relato</h2>
-          <p className="mt-5 text-lg text-grafite">
+          <h2 className="text-2xl text-tinta sm:text-3xl">Como escrever seu relato</h2>
+          <p className="mt-5 text-lg text-tinta">
             O relato tem sete partes. Vá seguindo na ordem, com calma:
           </p>
           <ol className="mt-6 space-y-3">
             {partesRelato.map((parte, i) => (
               <li key={parte} className="flex items-center gap-4 border-b border-border pb-3">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-mata text-base font-semibold text-mata-foreground">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-tinta text-base font-semibold text-tinta-foreground">
                   {i + 1}
                 </span>
-                <span className="text-base font-medium text-grafite">{parte}</span>
+                <span className="text-base font-medium text-tinta">{parte}</span>
               </li>
             ))}
           </ol>
 
-          <div className="mt-8 rounded-xl bg-areia p-5">
-            <p className="text-base font-semibold text-terra">
+          <div className="mt-8 rounded-xl bg-neve p-5">
+            <p className="text-base font-semibold text-tinta">
               Limite de 450 a 700 palavras · formato .docx obrigatório
             </p>
           </div>
 
           {/* TODO: trocar por <a href="/docs/modelo-relato.docx" download> quando o arquivo estiver disponível */}
-          <Button variant="terra" size="xl" className="mt-8 w-full sm:w-auto" disabled>
+          <Button variant="contorno" size="xl" className="mt-8 w-full sm:w-auto" disabled>
             Baixar o modelo de relato em Word
           </Button>
           <p className="mt-2 text-sm text-muted-foreground">Disponível em breve</p>
@@ -235,7 +239,7 @@ function Index() {
               href="https://chatgpt.com/g/g-6a6dedf3f8248191b04949dfd3a3221f-praticas-exitosas"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-base font-semibold text-ceu underline"
+              className="text-base font-semibold text-listel underline"
             >
               Converse com o agente de apoio
             </a>
@@ -248,15 +252,15 @@ function Index() {
       {/* 8. DATAS IMPORTANTES */}
       <section className="px-6 section-pad">
         <div className="mx-auto max-w-5xl">
-          <h2 className="text-center text-2xl text-mata sm:text-3xl">Datas importantes</h2>
+          <h2 className="text-center text-2xl text-tinta sm:text-3xl">Datas importantes</h2>
           <ol className="mt-10 flex flex-col gap-6 md:flex-row md:gap-4">
             {datas.map((d) => (
               <li
                 key={d.dia}
-                className="flex flex-1 items-center gap-4 border-l-4 border-campo pl-4 md:flex-col md:border-l-0 md:border-t-4 md:pl-0 md:pt-4 md:text-center"
+                className="flex flex-1 items-center gap-4 border-l-4 border-listel pl-4 md:flex-col md:border-l-0 md:border-t-4 md:pl-0 md:pt-4 md:text-center"
               >
-                <span className="text-2xl font-bold text-mata">{d.dia}</span>
-                <span className="text-base text-grafite">{d.texto}</span>
+                <span className="text-2xl font-bold text-listel">{d.dia}</span>
+                <span className="text-base text-tinta">{d.texto}</span>
               </li>
             ))}
           </ol>
@@ -264,15 +268,15 @@ function Index() {
       </section>
 
       {/* 9. ÁREA DE ENVIO DE RELATO */}
-      <section id="envio-relato" className="scroll-mt-6 bg-areia px-6 section-pad">
+      <section id="envio-relato" className="scroll-mt-6 bg-neve px-6 section-pad">
         <div className="mx-auto max-w-xl">
-          <h2 className="text-2xl text-mata sm:text-3xl">Enviar meu relato</h2>
-          <p className="mt-5 text-lg leading-relaxed text-grafite">
+          <h2 className="text-2xl text-tinta sm:text-3xl">Enviar meu relato</h2>
+          <p className="mt-5 text-lg leading-relaxed text-tinta">
             Para começar, informe o seu CPF. Ele serve só para identificar o seu envio e conferir os
             seus dados — nada aparece publicamente no site.
           </p>
           <div className="mt-8">
-            <Label htmlFor="cpf" className="text-base font-semibold text-grafite">
+            <Label htmlFor="cpf" className="text-base font-semibold text-tinta">
               CPF
             </Label>
             <Input
@@ -293,7 +297,7 @@ function Index() {
       </section>
 
       {/* 10. RODAPÉ */}
-      <footer className="bg-mata px-6 py-14 text-mata-foreground">
+      <footer className="bg-tinta px-6 py-14 text-tinta-foreground">
         <div className="mx-auto max-w-3xl">
           <h2 className="text-xl">Fale com a organização</h2>
           <p className="mt-3 text-base">
@@ -314,7 +318,7 @@ function Index() {
               (nome) => (
                 <div
                   key={nome}
-                  className="flex h-24 items-center justify-center rounded-xl border border-mata-foreground/25 bg-mata-foreground/10 px-3 text-center text-sm"
+                  className="flex h-24 items-center justify-center rounded-xl border border-tinta-foreground/25 bg-tinta-foreground/10 px-3 text-center text-sm"
                 >
                   {nome}
                 </div>
@@ -322,14 +326,14 @@ function Index() {
             )}
           </div>
 
-          <OndaJacutinga className="mt-10 h-5 w-full text-sol/50" />
+          <OndaJacutinga className="mt-10 h-5 w-full text-tinta-foreground/20" />
 
           <p className="mt-8 text-sm">
             <Link to="/privacidade" className="underline">
               Privacidade
             </Link>
           </p>
-          <p className="mt-4 text-sm text-mata-foreground/85">
+          <p className="mt-4 text-sm text-tinta-foreground/85">
             Comissão Organizadora — Summit de Educação de Arabutã · Gen-Z Educação · Secretaria
             Municipal de Educação de Arabutã
           </p>

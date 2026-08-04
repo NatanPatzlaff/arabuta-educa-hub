@@ -32,18 +32,18 @@ export function RaiosDeSol({ className = "" }: { className?: string }) {
 export function FolhaDivisor({ className = "" }: { className?: string }) {
   return (
     <div className={`flex items-center justify-center gap-4 ${className}`} aria-hidden="true">
-      <span className="h-px w-16 bg-terra/30 sm:w-28" />
-      <svg viewBox="0 0 32 40" className="h-8 w-6 text-mata" fill="currentColor">
+      <span className="h-px w-16 bg-cinza sm:w-28" />
+      <svg viewBox="0 0 32 40" className="h-8 w-6 text-listel" fill="currentColor">
         <path d="M16 2c8 6 12 13 12 20 0 8-5.4 14-12 16C9.4 36 4 30 4 22 4 15 8 8 16 2Z" opacity="0.9" />
-        <path d="M16 6v30" stroke="var(--areia)" strokeWidth="1.5" fill="none" />
+        <path d="M16 6v30" stroke="var(--background)" strokeWidth="1.5" fill="none" />
         <path
           d="M16 14 9 11M16 20l-8-3M16 16l7-3M16 23l7-3"
-          stroke="var(--areia)"
+          stroke="var(--background)"
           strokeWidth="1.2"
           fill="none"
         />
       </svg>
-      <span className="h-px w-16 bg-terra/30 sm:w-28" />
+      <span className="h-px w-16 bg-cinza sm:w-28" />
     </div>
   );
 }
@@ -62,7 +62,8 @@ export function OndaJacutinga({ className = "" }: { className?: string }) {
       <path d="M0 20c60-16 120-16 180 0s120 16 180 0 120-16 180 0 120 16 180 0 120-16 180 0 120 16 180 0 120-16 180 0" />
       <path
         d="M0 30c60-16 120-16 180 0s120 16 180 0 120-16 180 0 120 16 180 0 120-16 180 0 120 16 180 0 120-16 180 0"
-        opacity="0.4"
+        opacity="0.25"
+        stroke="var(--listel)"
       />
     </svg>
   );

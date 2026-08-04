@@ -63,62 +63,56 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* Paleta oficial — brasão de Arabutã */
-  --color-campo: var(--campo);
-  --color-campo-foreground: var(--campo-foreground);
-  --color-mata: var(--mata);
-  --color-mata-foreground: var(--mata-foreground);
-  --color-ceu: var(--ceu);
-  --color-ceu-foreground: var(--ceu-foreground);
-  --color-sol: var(--sol);
-  --color-sol-foreground: var(--sol-foreground);
+  /* Paleta oficial — branco, preto, cinza, vermelho e amarelo */
+  --color-tinta: var(--tinta);
+  --color-tinta-foreground: var(--tinta-foreground);
+  --color-ferro: var(--ferro);
+  --color-cinza: var(--cinza);
+  --color-neve: var(--neve);
   --color-listel: var(--listel);
+  --color-listel-forte: var(--listel-forte);
   --color-listel-foreground: var(--listel-foreground);
-  --color-terra: var(--terra);
-  --color-terra-foreground: var(--terra-foreground);
-  --color-areia: var(--areia);
-  --color-grafite: var(--grafite);
+  --color-sol: var(--sol);
+  --color-sol-suave: var(--sol-suave);
+  --color-sol-foreground: var(--sol-foreground);
 }
 
 :root {
   --radius: 0.625rem;
 
   /* Paleta oficial */
-  --campo: hsl(89 46% 48%);
-  --campo-foreground: hsl(0 0% 100%);
-  --mata: hsl(141 64% 29%);
-  --mata-foreground: hsl(0 0% 100%);
-  --ceu: hsl(205 72% 56%);
-  --ceu-foreground: hsl(220 15% 16%);
-  --sol: hsl(50 100% 50%);
-  --sol-foreground: hsl(220 15% 16%);
-  --listel: hsl(0 65% 51%);
-  --listel-foreground: hsl(0 0% 100%);
-  --terra: hsl(29 53% 36%);
-  --terra-foreground: hsl(0 0% 100%);
-  --areia: hsl(42 50% 96%);
-  --grafite: hsl(220 15% 16%);
+  --tinta: oklch(0.18 0.01 60);
+  --tinta-foreground: oklch(1 0 0);
+  --ferro: oklch(0.46 0.008 60);
+  --cinza: oklch(0.9 0.004 60);
+  --neve: oklch(0.975 0.003 80);
+  --listel: oklch(0.52 0.19 27);
+  --listel-forte: oklch(0.43 0.16 27);
+  --listel-foreground: oklch(1 0 0);
+  --sol: oklch(0.84 0.165 88);
+  --sol-suave: oklch(0.965 0.045 92);
+  --sol-foreground: oklch(0.18 0.01 60);
 
   /* Tokens semânticos shadcn mapeados na paleta */
-  --background: hsl(0 0% 100%);
-  --foreground: hsl(220 15% 16%);
-  --card: hsl(0 0% 100%);
-  --card-foreground: hsl(220 15% 16%);
-  --popover: hsl(0 0% 100%);
-  --popover-foreground: hsl(220 15% 16%);
-  --primary: hsl(141 64% 29%);
-  --primary-foreground: hsl(0 0% 100%);
-  --secondary: hsl(42 50% 96%);
-  --secondary-foreground: hsl(141 64% 29%);
-  --muted: hsl(42 50% 96%);
-  --muted-foreground: hsl(220 12% 38%);
-  --accent: hsl(89 46% 48%);
-  --accent-foreground: hsl(0 0% 100%);
-  --destructive: hsl(0 65% 51%);
-  --destructive-foreground: hsl(0 0% 100%);
-  --border: hsl(29 30% 84%);
-  --input: hsl(29 30% 78%);
-  --ring: hsl(141 64% 29%);
+  --background: oklch(1 0 0);
+  --foreground: var(--tinta);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--tinta);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--tinta);
+  --primary: var(--listel);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: var(--neve);
+  --secondary-foreground: var(--tinta);
+  --muted: var(--neve);
+  --muted-foreground: var(--ferro);
+  --accent: var(--sol);
+  --accent-foreground: var(--tinta);
+  --destructive: var(--listel-forte);
+  --destructive-foreground: oklch(1 0 0);
+  --border: var(--cinza);
+  --input: oklch(0.84 0.006 60);
+  --ring: var(--listel);
 }
 
 :root {
@@ -138,25 +132,37 @@
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
+  /* Site é somente claro: .dark repete exatamente os valores de :root. */
+  --tinta: oklch(0.18 0.01 60);
+  --tinta-foreground: oklch(1 0 0);
+  --ferro: oklch(0.46 0.008 60);
+  --cinza: oklch(0.9 0.004 60);
+  --neve: oklch(0.975 0.003 80);
+  --listel: oklch(0.52 0.19 27);
+  --listel-forte: oklch(0.43 0.16 27);
+  --listel-foreground: oklch(1 0 0);
+  --sol: oklch(0.84 0.165 88);
+  --sol-suave: oklch(0.965 0.045 92);
+  --sol-foreground: oklch(0.18 0.01 60);
+  --background: oklch(1 0 0);
+  --foreground: var(--tinta);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--tinta);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--tinta);
+  --primary: var(--listel);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: var(--neve);
+  --secondary-foreground: var(--tinta);
+  --muted: var(--neve);
+  --muted-foreground: var(--ferro);
+  --accent: var(--sol);
+  --accent-foreground: var(--tinta);
+  --destructive: var(--listel-forte);
+  --destructive-foreground: oklch(1 0 0);
+  --border: var(--cinza);
+  --input: oklch(0.84 0.006 60);
+  --ring: var(--listel);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);

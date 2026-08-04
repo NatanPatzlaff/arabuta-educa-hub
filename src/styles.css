@@ -19,6 +19,9 @@
  */
 
 @theme inline {
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Lora", Georgia, serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -59,29 +62,66 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Paleta oficial — brasão de Arabutã */
+  --color-campo: var(--campo);
+  --color-campo-foreground: var(--campo-foreground);
+  --color-mata: var(--mata);
+  --color-mata-foreground: var(--mata-foreground);
+  --color-ceu: var(--ceu);
+  --color-ceu-foreground: var(--ceu-foreground);
+  --color-sol: var(--sol);
+  --color-sol-foreground: var(--sol-foreground);
+  --color-listel: var(--listel);
+  --color-listel-foreground: var(--listel-foreground);
+  --color-terra: var(--terra);
+  --color-terra-foreground: var(--terra-foreground);
+  --color-areia: var(--areia);
+  --color-grafite: var(--grafite);
 }
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+
+  /* Paleta oficial */
+  --campo: hsl(89 46% 48%);
+  --campo-foreground: hsl(0 0% 100%);
+  --mata: hsl(141 64% 29%);
+  --mata-foreground: hsl(0 0% 100%);
+  --ceu: hsl(205 72% 56%);
+  --ceu-foreground: hsl(220 15% 16%);
+  --sol: hsl(50 100% 50%);
+  --sol-foreground: hsl(220 15% 16%);
+  --listel: hsl(0 65% 51%);
+  --listel-foreground: hsl(0 0% 100%);
+  --terra: hsl(29 53% 36%);
+  --terra-foreground: hsl(0 0% 100%);
+  --areia: hsl(42 50% 96%);
+  --grafite: hsl(220 15% 16%);
+
+  /* Tokens semânticos shadcn mapeados na paleta */
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(220 15% 16%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(220 15% 16%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(220 15% 16%);
+  --primary: hsl(141 64% 29%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(42 50% 96%);
+  --secondary-foreground: hsl(141 64% 29%);
+  --muted: hsl(42 50% 96%);
+  --muted-foreground: hsl(220 12% 38%);
+  --accent: hsl(89 46% 48%);
+  --accent-foreground: hsl(0 0% 100%);
+  --destructive: hsl(0 65% 51%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(29 30% 84%);
+  --input: hsl(29 30% 78%);
+  --ring: hsl(141 64% 29%);
+}
+
+:root {
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -140,5 +180,27 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
   }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+}
+
+@utility epigrafe {
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+
+@utility section-pad {
+  padding-block: 4.5rem;
 }

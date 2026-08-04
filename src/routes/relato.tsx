@@ -327,7 +327,21 @@ function PaginaRelato() {
         }
         return <FormularioMostra sessao={sessao} onSucesso={setSucesso} />;
       }
-      if (proleeiSo || escolha === "proleei") return <Placeholder titulo="Formulário do ProLEEI" />;
+      if (proleeiSo || escolha === "proleei") {
+        if (sucessoProleei) {
+          return (
+            <SucessoProleei
+              resultado={sucessoProleei}
+              podeMostra={sessao.pode_mostra}
+              aoIrMostra={() => {
+                setSucessoProleei(null);
+                setEscolha("mostra");
+              }}
+            />
+          );
+        }
+        return <FormularioProleei sessao={sessao} onSucesso={setSucessoProleei} />;
+      }
 
       return (
         <div>

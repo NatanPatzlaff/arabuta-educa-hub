@@ -312,6 +312,23 @@ export type Database = {
     }
     Functions: {
       is_admin: { Args: never; Returns: boolean }
+      submeter_relato_mostra: {
+        Args: {
+          p_autorizacao: boolean
+          p_categoria: Database["public"]["Enums"]["categoria_relato"]
+          p_coautores: Json
+          p_declaracao_coautoria: boolean
+          p_declaracao_originalidade: boolean
+          p_docx_path: string
+          p_imagens: string[]
+          p_inscricao_id: string
+          p_modo: Database["public"]["Enums"]["modo_participacao"]
+          p_origem: Database["public"]["Enums"]["origem_imagem"]
+          p_pdf_path: string
+          p_titulo: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       categoria_relato: "gestao" | "educacao_infantil" | "ensino_fundamental"

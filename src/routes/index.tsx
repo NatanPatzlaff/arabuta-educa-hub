@@ -1,10 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Award, BookOpen, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { FolhaDivisor, OndaJacutinga, RaiosDeSol } from "@/components/site/graficos";
 import { BarraFixa } from "@/components/site/barra-fixa";
+import { ConsultaCpf } from "@/components/site/consulta-cpf";
 
 const DESC =
   "Um dia inteiro de formação para os profissionais da educação de Arabutã (SC). 8 de setembro de 2026, no Centro Educacional Esportivo e Cultural.";
@@ -123,6 +122,7 @@ function RotuloPeriodo({ children }: { children: string }) {
 }
 
 function Index() {
+  const navigate = useNavigate();
   return (
     <main className="bg-background">
       <BarraFixa />
@@ -419,22 +419,10 @@ function Index() {
           </div>
 
           <div className={`${cell("branco")} lg:col-span-6 lg:col-start-7`}>
-            <Label htmlFor="cpf" className="text-base font-semibold text-tinta">
-              CPF
-            </Label>
-            <Input
-              id="cpf"
-              name="cpf"
-              inputMode="numeric"
-              autoComplete="off"
-              placeholder="000.000.000-00"
-              className="mt-2 h-14 rounded-xl bg-background text-base"
+            <ConsultaCpf
+              onEncontrado={() => navigate({ to: "/relato" })}
+              onNaoEncontrado={() => navigate({ to: "/relato" })}
             />
-            {/* Validação e envio serão implementados na próxima etapa. */}
-            <Button variant="acao" size="xl" className="mt-5 w-full" disabled>
-              Continuar
-            </Button>
-            <p className="mt-2 text-sm text-ferro">Disponível em breve</p>
           </div>
         </div>
       </section>

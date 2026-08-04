@@ -229,6 +229,7 @@ function FormularioInscricao({
           onBlur={() => aoSair("nome")}
           autoComplete="name"
           aria-invalid={!!erros.nome}
+          aria-describedby={erros.nome ? "erro-nome" : undefined}
           className={`${campoBase} ${borda("nome")}`}
         />
         <Erro id="erro-nome" texto={erros.nome} />
@@ -248,6 +249,7 @@ function FormularioInscricao({
           onChange={(e) => setCpf(mascaraCPF(e.target.value))}
           onBlur={() => aoSair("cpf")}
           aria-invalid={!!erros.cpf}
+          aria-describedby={erros.cpf ? "erro-cpf" : undefined}
           className={`${campoBase} ${borda("cpf")}`}
         />
         <p className="mt-2 text-sm text-ferro">
@@ -271,6 +273,7 @@ function FormularioInscricao({
           onChange={(e) => setEmail(e.target.value)}
           onBlur={() => aoSair("email")}
           aria-invalid={!!erros.email}
+          aria-describedby={erros.email ? "erro-email" : undefined}
           className={`${campoBase} ${borda("email")}`}
         />
         <Erro id="erro-email" texto={erros.email} />
@@ -290,6 +293,7 @@ function FormularioInscricao({
           onChange={(e) => setWhatsapp(mascaraTelefone(e.target.value))}
           onBlur={() => aoSair("whatsapp")}
           aria-invalid={!!erros.whatsapp}
+          aria-describedby={erros.whatsapp ? "erro-whatsapp" : undefined}
           className={`${campoBase} ${borda("whatsapp")}`}
         />
         <Erro id="erro-whatsapp" texto={erros.whatsapp} />
@@ -308,13 +312,17 @@ function FormularioInscricao({
           onChange={(e) => setEscola(e.target.value)}
           onBlur={() => aoSair("escola")}
           aria-invalid={!!erros.escola}
+          aria-describedby={erros.escola ? "erro-escola" : undefined}
           className={`${campoBase} ${borda("escola")}`}
         />
         <Erro id="erro-escola" texto={erros.escola} />
       </div>
 
       {/* 6. Função */}
-      <fieldset ref={(el) => { refs.current.funcao = el; }}>
+      <fieldset
+        ref={(el) => { refs.current.funcao = el; }}
+        aria-describedby={erros.funcao ? "erro-funcao" : undefined}
+      >
         <legend className={rotuloCampo}>Função</legend>
         <div className="mt-3 space-y-3">
           {funcoes.map((f) => (
@@ -343,7 +351,10 @@ function FormularioInscricao({
       </fieldset>
 
       {/* 7. Relato */}
-      <fieldset ref={(el) => { refs.current.relato = el; }}>
+      <fieldset
+        ref={(el) => { refs.current.relato = el; }}
+        aria-describedby={erros.relato ? "erro-relato" : undefined}
+      >
         <legend className={rotuloCampo}>Vai enviar relato?</legend>
         <div className="mt-3 space-y-3">
           {[
@@ -397,6 +408,8 @@ function FormularioInscricao({
           <input
             type="checkbox"
             checked={lgpd}
+            aria-invalid={!!erros.lgpd}
+            aria-describedby={erros.lgpd ? "erro-lgpd" : undefined}
             onChange={(e) => {
               setLgpd(e.target.checked);
               setErros((a) => ({ ...a, lgpd: undefined }));
@@ -451,7 +464,9 @@ function Confirmacao({
       <h2 className="text-2xl text-tinta sm:text-3xl">Inscrição confirmada</h2>
       <p className="mt-2 text-lg font-semibold text-tinta">{nome}</p>
       <p className="medida mt-4 text-base text-ferro">
-        Enviamos um e-mail de confirmação com os detalhes da sua inscrição.
+        Sua inscrição já está registrada. O e-mail automático de confirmação será enviado assim
+        que o endereço oficial do evento estiver ativo. Qualquer dúvida, fale com a organização
+        pelo WhatsApp {WHATS_ORG}.
       </p>
 
       <div className="mt-8 rounded-xl border border-cinza bg-neve p-6">

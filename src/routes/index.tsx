@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FolhaDivisor, OndaJacutinga, RaiosDeSol } from "@/components/site/graficos";
+import { BarraFixa } from "@/components/site/barra-fixa";
 
 const DESC =
   "Um dia inteiro de formação para os profissionais da educação de Arabutã (SC). 8 de setembro de 2026, no Centro Educacional Esportivo e Cultural.";
@@ -19,16 +20,16 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const programacao = [
+const programacao: { texto: string; hora?: string; pausa?: boolean }[] = [
   { texto: "Recepção e apresentação cultural de abertura" },
   { texto: "ProLEEI — falas dos participantes" },
-  { texto: "Coffee break" },
+  { texto: "Coffee break", pausa: true },
   {
     texto:
       "Palestra sobre alfabetização na educação infantil: neurociência, consciência fonológica e atraso de linguagem, com atividades práticas",
   },
   { texto: "Apresentação das práticas exitosas selecionadas" },
-  { texto: "Almoço" },
+  { texto: "Almoço", pausa: true },
   {
     hora: "13h30 às 14h30",
     texto:
@@ -62,15 +63,16 @@ const datas = [
 
 function Index() {
   return (
-    <main className="bg-background">
+      <main className="bg-background">
+      <BarraFixa />
       {/* 1. HERO */}
-      <header className="relative overflow-hidden bg-tinta px-6 pb-16 pt-14 text-tinta-foreground sm:pt-16">
+      <header
+        id="hero"
+        className="relative overflow-hidden bg-tinta px-6 pb-16 pt-14 text-tinta-foreground sm:pt-16"
+      >
         <RaiosDeSol className="pointer-events-none absolute -top-6 left-1/2 h-16 w-56 -translate-x-1/2 text-sol/60" />
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-sol">
-            8 de setembro de 2026
-          </p>
-          <h1 className="mt-4 text-4xl leading-tight sm:text-5xl">
+          <h1 className="mt-6 text-4xl leading-tight sm:text-5xl">
             Summit de Educação de Arabutã
           </h1>
           <p className="mt-4 text-lg text-tinta-foreground/90">
@@ -88,7 +90,7 @@ function Index() {
             </Button>
           </div>
         </div>
-        <OndaJacutinga className="absolute inset-x-0 bottom-0 h-6 w-full text-tinta-foreground/20" />
+        <OndaJacutinga className="absolute inset-x-0 bottom-0 h-6 w-full text-white/15" />
       </header>
 
       {/* 2. EPÍGRAFE */}

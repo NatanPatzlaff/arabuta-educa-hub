@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { FolhaDivisor } from "@/components/site/graficos";
 import { ConsultaCpf, WHATS_LINK, WHATS_ORG } from "@/components/site/consulta-cpf";
 import { FormularioMostra, type ResultadoMostra } from "@/components/site/formulario-mostra";
+import { FormularioProleei, type ResultadoProleei } from "@/components/site/formulario-proleei";
 import { lerSessaoRelato, limparSessaoRelato, type SessaoRelato } from "@/lib/sessao-relato";
 
 const DESC =
@@ -74,15 +75,6 @@ function Saudacao({ nome, aoTrocar }: { nome: string; aoTrocar: () => void }) {
       >
         Não é você? Consultar outro CPF
       </button>
-    </div>
-  );
-}
-
-function Placeholder({ titulo }: { titulo: string }) {
-  return (
-    <div className="rounded-xl border border-cinza bg-neve p-6 sm:p-8">
-      <h2 className="text-2xl text-tinta">{titulo}</h2>
-      <p className="mt-3 text-base text-ferro">Em construção.</p>
     </div>
   );
 }

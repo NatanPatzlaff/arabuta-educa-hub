@@ -253,8 +253,8 @@ export function FormularioMostra({
       setEtapa(`Enviando arquivo ${feitos} de ${total}...`);
       setProgresso(Math.round(((feitos - 1) / total) * 100));
       const { error } = await supabase.storage.from(bucket).upload(caminho, arquivo, {
-        contentType: arquivo.type || undefined,
         upsert: false,
+        ...(arquivo.type ? { contentType: arquivo.type } : {}),
       });
       if (error) throw new Error("upload");
       enviados.push({ bucket, caminho });

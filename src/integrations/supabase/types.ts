@@ -94,6 +94,8 @@ export type Database = {
           cpf: string
           created_at: string
           email: string
+          email_confirmacao_enviado_em: string | null
+          email_confirmacao_erro: string | null
           escola: string
           funcao: Database["public"]["Enums"]["funcao_inscrito"]
           id: string
@@ -109,6 +111,8 @@ export type Database = {
           cpf: string
           created_at?: string
           email: string
+          email_confirmacao_enviado_em?: string | null
+          email_confirmacao_erro?: string | null
           escola: string
           funcao: Database["public"]["Enums"]["funcao_inscrito"]
           id?: string
@@ -124,6 +128,8 @@ export type Database = {
           cpf?: string
           created_at?: string
           email?: string
+          email_confirmacao_enviado_em?: string | null
+          email_confirmacao_erro?: string | null
           escola?: string
           funcao?: Database["public"]["Enums"]["funcao_inscrito"]
           id?: string

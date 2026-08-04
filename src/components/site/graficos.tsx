@@ -32,8 +32,8 @@ export function RaiosDeSol({ className = "" }: { className?: string }) {
 export function FolhaDivisor({ className = "" }: { className?: string }) {
   return (
     <div className={`flex items-center justify-center gap-4 ${className}`} aria-hidden="true">
-      <span className="h-px w-16 bg-terra/30 sm:w-28" />
-      <svg viewBox="0 0 32 40" className="h-8 w-6 text-mata" fill="currentColor">
+      <span className="h-px w-16 bg-cinza/30 sm:w-28" />
+      <svg viewBox="0 0 32 40" className="h-8 w-6 text-tinta" fill="currentColor">
         <path d="M16 2c8 6 12 13 12 20 0 8-5.4 14-12 16C9.4 36 4 30 4 22 4 15 8 8 16 2Z" opacity="0.9" />
         <path d="M16 6v30" stroke="var(--areia)" strokeWidth="1.5" fill="none" />
         <path
@@ -43,7 +43,7 @@ export function FolhaDivisor({ className = "" }: { className?: string }) {
           fill="none"
         />
       </svg>
-      <span className="h-px w-16 bg-terra/30 sm:w-28" />
+      <span className="h-px w-16 bg-cinza/30 sm:w-28" />
     </div>
   );
 }

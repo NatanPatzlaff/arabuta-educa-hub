@@ -50,7 +50,7 @@ const rotuloCampo = "block text-sm font-semibold text-tinta";
 const campoBase =
   "mt-2 h-14 w-full rounded-xl border bg-background px-4 text-base text-tinta outline-none transition-colors placeholder:text-ferro focus:border-tinta";
 
-function Erro({ texto, id }: { texto?: string; id: string }) {
+function Erro({ texto, id }: { texto?: string | undefined; id: string }) {
   if (!texto) return null;
   return (
     <p id={id} role="alert" className="mt-2 text-sm font-semibold text-listel">

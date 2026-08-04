@@ -152,8 +152,12 @@ function Index() {
           <h2 className="text-2xl text-tinta sm:text-3xl">Mostra de Práticas Exitosas</h2>
           <p className="mt-5 text-lg leading-relaxed text-tinta">
             Se você desenvolveu uma prática que deu certo na sua sala ou na sua unidade, conte para
-            a gente. Quem tem o relato selecionado recebe certificado de 15 horas em vez de 8, tem o
-            trabalho publicado no e-book do Summit e a chance de apresentar no palco.
+            a gente. Quem tem o relato selecionado recebe{" "}
+            <mark className="bg-sol-suave px-1 font-semibold text-sol-foreground">
+              certificado de 15 horas
+            </mark>{" "}
+            em vez de 8, tem o trabalho publicado no e-book do Summit e a chance de apresentar no
+            palco.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">

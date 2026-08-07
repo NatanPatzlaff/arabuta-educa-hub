@@ -259,6 +259,8 @@ export type Database = {
           declaracao_coautoria: boolean
           declaracao_direitos_autorais: boolean
           declaracao_originalidade: boolean
+          email_confirmacao_enviado_em: string | null
+          email_confirmacao_erro: string | null
           id: string
           imagens: string[]
           inscricao_id: string
@@ -278,6 +280,8 @@ export type Database = {
           declaracao_coautoria?: boolean
           declaracao_direitos_autorais?: boolean
           declaracao_originalidade: boolean
+          email_confirmacao_enviado_em?: string | null
+          email_confirmacao_erro?: string | null
           id?: string
           imagens?: string[]
           inscricao_id: string
@@ -297,6 +301,8 @@ export type Database = {
           declaracao_coautoria?: boolean
           declaracao_direitos_autorais?: boolean
           declaracao_originalidade?: boolean
+          email_confirmacao_enviado_em?: string | null
+          email_confirmacao_erro?: string | null
           id?: string
           imagens?: string[]
           inscricao_id?: string
@@ -322,6 +328,8 @@ export type Database = {
           created_at: string
           declaracao_direitos_autorais: boolean
           declaracao_protecao_dados: boolean
+          email_confirmacao_enviado_em: string | null
+          email_confirmacao_erro: string | null
           id: string
           imagens: string[]
           inscricao_id: string
@@ -334,6 +342,8 @@ export type Database = {
           created_at?: string
           declaracao_direitos_autorais?: boolean
           declaracao_protecao_dados: boolean
+          email_confirmacao_enviado_em?: string | null
+          email_confirmacao_erro?: string | null
           id?: string
           imagens?: string[]
           inscricao_id: string
@@ -346,6 +356,8 @@ export type Database = {
           created_at?: string
           declaracao_direitos_autorais?: boolean
           declaracao_protecao_dados?: boolean
+          email_confirmacao_enviado_em?: string | null
+          email_confirmacao_erro?: string | null
           id?: string
           imagens?: string[]
           inscricao_id?: string

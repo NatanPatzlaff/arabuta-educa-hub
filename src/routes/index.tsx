@@ -49,13 +49,13 @@ const tarde: ItemPrograma[] = [
 ];
 
 const partesRelato = [
-  "Identificação",
+  "Título",
   "Contexto",
-  "Objetivos",
-  "Descrição da prática",
+  "O que foi feito",
   "Resultados",
-  "Reflexão",
-  "Referências",
+  "Aprendizados",
+  "Frase de destaque",
+  "Palavras-chave (3)",
 ];
 
 const datas = [
@@ -135,8 +135,11 @@ function Index() {
         <div className="container-site">
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="mt-6 text-4xl leading-tight sm:text-5xl">
-              Summit de Educação de Arabutã
+              1º Summit de Educação de Arabutã
             </h1>
+            <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-tinta-foreground/70">
+              2º Seminário Municipal de Educação
+            </p>
             <p className="mt-4 text-lg text-tinta-foreground/90">
               Encontro de pessoas, práticas e ideias que movimentam a educação
             </p>
@@ -191,7 +194,9 @@ function Index() {
             </div>
             <div className={`${cell("neve")} flex flex-col justify-center lg:col-span-3`}>
               <span className="font-display text-4xl font-bold leading-none text-listel">15h</span>
-              <span className="mt-3 text-sm text-ferro">para quem tem relato selecionado</span>
+              <span className="mt-3 text-sm text-ferro">
+                para quem tem relato habilitado, mesmo sem ir ao palco
+              </span>
             </div>
             <div className={`${cell("neve")} flex flex-col justify-center lg:col-span-2`}>
               <span className="font-display text-3xl font-bold leading-none text-listel">
@@ -244,7 +249,7 @@ function Index() {
             <div className={`${cell("branco")} flex items-center sm:col-span-2 lg:col-span-6`}>
               <p className="medida text-lg leading-relaxed text-tinta">
                 Se você desenvolveu uma prática que deu certo na sua sala ou na sua unidade, conte
-                para a gente. Quem tem o relato selecionado recebe{" "}
+                para a gente. Quem tem o relato habilitado recebe{" "}
                 <mark className="bg-sol-suave px-1 font-semibold text-sol-foreground">
                   certificado de 15 horas
                 </mark>{" "}
@@ -263,14 +268,13 @@ function Index() {
               </div>
             ))}
 
-            {/* TODO: trocar os botões desabilitados por <a href="/docs/*.pdf" download> quando os PDFs estiverem disponíveis */}
+            {/* TODO: trocar o botão do convite por <a href="/docs/convite.pdf" download> quando o PDF estiver disponível */}
             <div className={`${cell("branco")} sm:col-span-2 lg:col-span-12`}>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <Button variant="contorno" size="xl" className="w-full" disabled>
-                    Baixar o Regulamento (PDF)
+                  <Button asChild variant="contorno" size="xl" className="w-full">
+                    <Link to="/regulamento">Ler o regulamento completo</Link>
                   </Button>
-                  <p className="mt-2 text-center text-sm text-ferro">Disponível em breve</p>
                 </div>
                 <div>
                   <Button variant="contorno" size="xl" className="w-full" disabled>
@@ -300,9 +304,13 @@ function Index() {
                     institucional por unidade, com formato livre e caminho próprio.
                   </p>
                   <p className="mt-4">
-                    <a href="#mostra-regulamento" className="font-semibold text-listel underline">
+                    <Link
+                      to="/regulamento"
+                      hash="secao-3"
+                      className="font-semibold text-listel underline"
+                    >
                       Ver a seção 3 do regulamento
-                    </a>
+                    </Link>
                   </p>
                 </div>
                 <div className="lg:col-span-5">
@@ -315,7 +323,6 @@ function Index() {
               </div>
             </div>
           </div>
-          <span id="mostra-regulamento" />
         </div>
       </section>
 
@@ -365,6 +372,65 @@ function Index() {
               </a>
             </div>
           </div>
+
+          <div className="mt-4 rounded-xl border-l-4 border-listel bg-neve p-5">
+            <p className="text-base font-semibold text-tinta">
+              Não escreva seu nome dentro do arquivo do relato.
+            </p>
+            <p className="medida mt-2 text-sm text-ferro">
+              A autoria é registrada aqui no site, no formulário de envio — é de lá que sai tudo,
+              inclusive o seu nome no e-book e no certificado. Manter o arquivo sem nome serve só
+              para que os avaliadores leiam sem saber quem escreveu; nenhuma informação se perde.
+            </p>
+          </div>
+
+          <div className="mt-4 rounded-xl border-l-4 border-listel bg-neve p-5">
+            <p className="text-base font-semibold text-tinta">
+              Ao usar o agente de IA, não informe dados de estudantes.
+            </p>
+            <p className="medida mt-2 text-sm text-ferro">
+              Não informe nomes, iniciais, diagnósticos, condições de saúde ou situações
+              familiares. Use descrições gerais, como "um estudante" ou "parte do grupo".
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <FolhaDivisor />
+
+      {/* 7.5 PROTEÇÃO DOS ESTUDANTES */}
+      <section className="section-pad">
+        <div className="container-site">
+          <h2 className="text-2xl text-tinta sm:text-3xl">Proteção dos estudantes</h2>
+          <p className="medida mt-5 text-lg leading-relaxed text-tinta">
+            O e-book é uma publicação digital e aberta, distribuída por QR code e link, sem
+            versão impressa. Por isso, ao escrever o relato e escolher as fotos:
+          </p>
+
+          <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <div className={cell("neve")}>
+              <h3 className="text-lg text-tinta">No texto</h3>
+              <p className="medida mt-3 text-base leading-relaxed text-tinta">
+                Não identifique estudantes — nem nome completo, nem inicial. Escreva "uma aluna",
+                "um estudante do 3º ano" ou use nome fictício. Não descreva diagnósticos,
+                condições de saúde ou situações familiares que permitam reconhecer alguém.
+              </p>
+            </div>
+            <div className={cell("neve")}>
+              <h3 className="text-lg text-tinta">Nas fotos</h3>
+              <p className="medida mt-3 text-base leading-relaxed text-tinta">
+                Fotografias com estudantes identificáveis só podem ser enviadas com autorização
+                válida para publicação em materiais institucionais digitais de acesso público.
+                Havendo dúvida sobre a abrangência do documento, não envie a imagem.
+              </p>
+            </div>
+          </div>
+
+          <div className={`${cell("preto")} mt-6 border-l-4 border-l-listel`}>
+            <p className="text-base font-semibold text-tinta-foreground">
+              O mesmo vale para colegas de trabalho.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -411,7 +477,7 @@ function Index() {
       <section id="envio-relato" className="scroll-mt-6 bg-neve section-pad">
         <div className="container-site grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-6">
           <div className="lg:col-span-5">
-            <h2 className="text-2xl text-tinta sm:text-3xl">Enviar meu relato</h2>
+            <h2 className="text-2xl text-tinta sm:text-3xl">Submeter prática exitosa</h2>
             <p className="medida mt-5 text-lg leading-relaxed text-tinta">
               Para começar, informe o seu CPF. Ele serve só para identificar o seu envio e conferir
               os seus dados — nada aparece publicamente no site.
@@ -462,6 +528,11 @@ function Index() {
 
             <div className="md:text-right">
               <p className="text-sm">
+                <Link to="/regulamento" className="underline">
+                  Regulamento
+                </Link>
+              </p>
+              <p className="mt-2 text-sm">
                 <Link to="/privacidade" className="underline">
                   Privacidade
                 </Link>

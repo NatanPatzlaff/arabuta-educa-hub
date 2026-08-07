@@ -361,19 +361,19 @@ function FormularioInscricao({
             {
               marcado: palco,
               alterna: marcarPalco,
-              rotulo: "Relato para a Mostra — quero apresentar no palco",
+              rotulo: "Vou enviar relato para a Mostra — quero apresentar no palco",
             },
             {
               marcado: ebook,
               alterna: marcarEbook,
-              rotulo: "Relato para a Mostra — só para o e-book",
+              rotulo: "Vou enviar relato para a Mostra — só para o e-book",
             },
             {
               marcado: proleei,
               alterna: marcarProleei,
-              rotulo: "Vou participar do relato do ProLEEI",
+              rotulo: "Vou participar do relato institucional do ProLEEI",
             },
-            { marcado: naoEnvia, alterna: marcarNaoEnvia, rotulo: "Não vou enviar" },
+            { marcado: naoEnvia, alterna: marcarNaoEnvia, rotulo: "Não vou enviar relato" },
           ].map((opcao) => (
             <label
               key={opcao.rotulo}
@@ -500,10 +500,9 @@ function Confirmacao({
       </div>
 
       <div className="mt-6">
-        <Button variant="contorno" size="xl" disabled className="w-full sm:w-auto">
-          Baixar o Regulamento
+        <Button asChild variant="contorno" size="xl" className="w-full sm:w-auto">
+          <Link to="/regulamento">Ler o regulamento completo</Link>
         </Button>
-        <p className="mt-2 text-sm text-ferro">Disponível em breve.</p>
       </div>
     </div>
   );

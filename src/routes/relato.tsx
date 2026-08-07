@@ -402,7 +402,7 @@ function PaginaRelato() {
         <div className="lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
           <FolhaDivisor className="mb-6" />
           <h1 className="text-3xl text-tinta sm:text-4xl">
-            {emProleei ? "Relato institucional do ProLEEI" : "Enviar meu relato"}
+            {emProleei ? "Relato institucional do ProLEEI" : "Submeter prática exitosa"}
           </h1>
           <AvisoPrazo />
           {emProleei ? (

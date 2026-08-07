@@ -14,6 +14,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as InscricaoRouteImport } from './routes/inscricao'
 import { Route as PresencaRouteImport } from './routes/presenca'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
+import { Route as RegulamentoRouteImport } from './routes/regulamento'
 import { Route as RelatoRouteImport } from './routes/relato'
 
 const IndexRoute = IndexRouteImport.update({
@@ -41,6 +42,11 @@ const PrivacidadeRoute = PrivacidadeRouteImport.update({
   path: '/privacidade',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegulamentoRoute = RegulamentoRouteImport.update({
+  id: '/regulamento',
+  path: '/regulamento',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RelatoRoute = RelatoRouteImport.update({
   id: '/relato',
   path: '/relato',
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/inscricao': typeof InscricaoRoute
   '/presenca': typeof PresencaRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/regulamento': typeof RegulamentoRoute
   '/relato': typeof RelatoRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/inscricao': typeof InscricaoRoute
   '/presenca': typeof PresencaRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/regulamento': typeof RegulamentoRoute
   '/relato': typeof RelatoRoute
 }
 export interface FileRoutesById {
@@ -70,14 +78,28 @@ export interface FileRoutesById {
   '/inscricao': typeof InscricaoRoute
   '/presenca': typeof PresencaRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/regulamento': typeof RegulamentoRoute
   '/relato': typeof RelatoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/admin' | '/inscricao' | '/presenca' | '/privacidade' | '/relato'
+    | '/'
+    | '/admin'
+    | '/inscricao'
+    | '/presenca'
+    | '/privacidade'
+    | '/regulamento'
+    | '/relato'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/inscricao' | '/presenca' | '/privacidade' | '/relato'
+  to:
+    | '/'
+    | '/admin'
+    | '/inscricao'
+    | '/presenca'
+    | '/privacidade'
+    | '/regulamento'
+    | '/relato'
   id:
     | '__root__'
     | '/'
@@ -85,6 +107,7 @@ export interface FileRouteTypes {
     | '/inscricao'
     | '/presenca'
     | '/privacidade'
+    | '/regulamento'
     | '/relato'
   fileRoutesById: FileRoutesById
 }
@@ -94,6 +117,7 @@ export interface RootRouteChildren {
   InscricaoRoute: typeof InscricaoRoute
   PresencaRoute: typeof PresencaRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
+  RegulamentoRoute: typeof RegulamentoRoute
   RelatoRoute: typeof RelatoRoute
 }
 
@@ -134,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacidadeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/regulamento': {
+      id: '/regulamento'
+      path: '/regulamento'
+      fullPath: '/regulamento'
+      preLoaderRoute: typeof RegulamentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/relato': {
       id: '/relato'
       path: '/relato'
@@ -150,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   InscricaoRoute: InscricaoRoute,
   PresencaRoute: PresencaRoute,
   PrivacidadeRoute: PrivacidadeRoute,
+  RegulamentoRoute: RegulamentoRoute,
   RelatoRoute: RelatoRoute,
 }
 export const routeTree = rootRouteImport

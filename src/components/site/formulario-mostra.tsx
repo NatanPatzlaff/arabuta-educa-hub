@@ -28,12 +28,16 @@ const MSG = {
   autorizacao: "Para enviar fotos da prática, é preciso marcar esta autorização.",
   coautoria: "Marque a declaração de coautoria.",
   originalidade: "Para enviar, é preciso marcar a declaração de originalidade.",
+  direitosAutorais: "Para enviar, é preciso aceitar as condições de publicação e direitos autorais.",
+  contribuicaoAutor: "Descreva a sua contribuição para a prática.",
   coautorNome: "Escreva o nome completo do coautor.",
   coautorCpf: "Esse CPF não parece válido. Confira os números.",
   coautorEmail: "Parece que o e-mail está incompleto.",
   coautorContrib: "Descreva a contribuição do coautor.",
   inscricao_nao_habilitada: `Sua inscrição não prevê envio de relato para a Mostra. Fale com a organização pelo WhatsApp ${WHATS_ORG}.`,
   prazo_encerrado: "O prazo de submissão encerrou em 23 de agosto de 2026.",
+  prazo_nao_aberto: "As submissões ainda não abriram. Elas começam em 5 de agosto de 2026.",
+  limite_relatos_excedido: `Você já enviou 2 relatos como autor principal — esse é o limite por pessoa. Coautoria não entra nessa conta. Dúvidas: WhatsApp ${WHATS_ORG}.`,
   generico: `Não conseguimos registrar seu relato agora. Seus arquivos não foram perdidos — tente enviar de novo em instantes ou fale com a organização pelo WhatsApp ${WHATS_ORG}.`,
 };
 
@@ -116,7 +120,12 @@ export function FormularioMostra({
 }) {
   const [titulo, setTitulo] = React.useState("");
   const [categoria, setCategoria] = React.useState<Categoria | "">("");
-  const [modo, setModo] = React.useState<Modo | "">(sessao.modo_participacao_preferido ?? "");
+  // Padrão do §7: "Quero concorrer à apresentação" é a opção padrão, exceto se a
+  // pessoa já tinha escolhido "só e-book" na inscrição.
+  const [modo, setModo] = React.useState<Modo | "">(
+    sessao.modo_participacao_preferido ?? "palco",
+  );
+  const [contribuicaoAutor, setContribuicaoAutor] = React.useState("");
   const [coautores, setCoautores] = React.useState<Coautor[]>([]);
   const [decCoautoria, setDecCoautoria] = React.useState(false);
   const [docx, setDocx] = React.useState<File | null>(null);
@@ -125,12 +134,30 @@ export function FormularioMostra({
   const [origem, setOrigem] = React.useState<Origem | "">("");
   const [autorizacao, setAutorizacao] = React.useState(false);
   const [decOriginalidade, setDecOriginalidade] = React.useState(false);
+  const [decDireitosAutorais, setDecDireitosAutorais] = React.useState(false);
 
   const [erros, setErros] = React.useState<Record<string, string | undefined>>({});
   const [erroGeral, setErroGeral] = React.useState("");
   const [enviando, setEnviando] = React.useState(false);
   const [etapa, setEtapa] = React.useState("");
   const [progresso, setProgresso] = React.useState(0);
+
+  // §2: até 2 relatos por autor principal (coautoria não conta nessa conta).
+  const [limiteRelatos, setLimiteRelatos] = React.useState<boolean | null>(null);
+
+  React.useEffect(() => {
+    let ativo = true;
+    (async () => {
+      const { count } = await supabase
+        .from("relatos_mostra")
+        .select("id", { count: "exact", head: true })
+        .eq("inscricao_id", sessao.inscricao_id);
+      if (ativo) setLimiteRelatos((count ?? 0) >= 2);
+    })();
+    return () => {
+      ativo = false;
+    };
+  }, [sessao.inscricao_id]);
 
   const docxRef = React.useRef<HTMLInputElement>(null);
   const pdfRef = React.useRef<HTMLInputElement>(null);
@@ -213,6 +240,7 @@ export function FormularioMostra({
     if (!titulo.trim()) novos["titulo"] = MSG.titulo;
     if (!categoria) novos["categoria"] = MSG.categoria;
     if (!modo) novos["modo"] = MSG.modo;
+    if (contribuicaoAutor.trim().length < 3) novos["contribuicaoAutor"] = MSG.contribuicaoAutor;
 
     coautores.forEach((c, i) => {
       if (!coautorPreenchido(c)) return;
@@ -228,6 +256,7 @@ export function FormularioMostra({
     if (imagens.length > 0 && origem === "foto_pratica" && !autorizacao)
       novos["autorizacao"] = MSG.autorizacao;
     if (!decOriginalidade) novos["originalidade"] = MSG.originalidade;
+    if (!decDireitosAutorais) novos["direitosAutorais"] = MSG.direitosAutorais;
 
     setErros(novos);
     return Object.keys(novos).length === 0;
@@ -300,6 +329,8 @@ export function FormularioMostra({
         p_autorizacao: origem === "foto_pratica" ? autorizacao : false,
         p_declaracao_coautoria: coautores.length > 0 ? decCoautoria : false,
         p_declaracao_originalidade: decOriginalidade,
+        p_contribuicao_autor_principal: contribuicaoAutor.trim(),
+        p_declaracao_direitos_autorais: decDireitosAutorais,
         p_coautores: coautores
           .filter(coautorPreenchido)
           .map((c) => ({
@@ -315,7 +346,11 @@ export function FormularioMostra({
         const bruto = `${error.message} ${error.details ?? ""}`;
         if (bruto.includes("inscricao_nao_habilitada")) setErroGeral(MSG.inscricao_nao_habilitada);
         else if (bruto.includes("prazo_encerrado")) setErroGeral(MSG.prazo_encerrado);
-        else setErroGeral(MSG.generico);
+        else if (bruto.includes("prazo_nao_aberto")) setErroGeral(MSG.prazo_nao_aberto);
+        else if (bruto.includes("limite_relatos_excedido")) {
+          setErroGeral(MSG.limite_relatos_excedido);
+          setLimiteRelatos(true);
+        } else setErroGeral(MSG.generico);
         return;
       }
 
@@ -334,6 +369,20 @@ export function FormularioMostra({
       setProgresso(0);
     }
   };
+
+  if (limiteRelatos === true) {
+    return (
+      <div className="rounded-xl border border-listel bg-background p-6 sm:p-8">
+        <p className="text-lg font-semibold text-listel">
+          Você já enviou 2 relatos como autor principal.
+        </p>
+        <p className="medida mt-3 text-base text-ferro">
+          Esse é o limite por pessoa (a coautoria não entra nessa conta). Se precisar rever algum
+          envio, fale com a organização pelo WhatsApp {WHATS_ORG}.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <form noValidate onSubmit={enviar} className="space-y-9">
@@ -413,6 +462,27 @@ export function FormularioMostra({
           </div>
           <Erro id="erro-modo" texto={erros["modo"]} />
         </fieldset>
+
+        <div>
+          <label htmlFor="contribuicao-autor" className={rotuloCampo}>
+            Sua contribuição para a prática
+          </label>
+          <textarea
+            id="contribuicao-autor"
+            value={contribuicaoAutor}
+            rows={3}
+            onChange={(e) => {
+              setContribuicaoAutor(e.target.value);
+              limpa("contribuicaoAutor");
+            }}
+            aria-invalid={!!erros["contribuicaoAutor"]}
+            aria-describedby={erros["contribuicaoAutor"] ? "erro-contribuicao-autor" : undefined}
+            className={`mt-2 w-full rounded-xl border bg-background p-4 text-base text-tinta outline-none transition-colors placeholder:text-ferro focus:border-tinta ${borda(
+              "contribuicaoAutor",
+            )}`}
+          />
+          <Erro id="erro-contribuicao-autor" texto={erros["contribuicaoAutor"]} />
+        </div>
       </Bloco>
 
       <Bloco titulo="Coautores">
@@ -580,6 +650,22 @@ export function FormularioMostra({
             </a>
           </div>
           <p className="mt-3 text-sm text-ferro">Modelo disponível em breve.</p>
+          <p className="medida mt-3 text-sm font-semibold text-listel">
+            Ao conversar com o agente, não informe nomes, iniciais, diagnósticos, condições de
+            saúde ou situações familiares de estudantes. Use descrições gerais, como "um
+            estudante" ou "parte do grupo".
+          </p>
+        </div>
+
+        <div className="rounded-xl border-l-4 border-listel bg-neve p-5">
+          <p className="text-base font-semibold text-tinta">
+            Não escreva seu nome dentro deste arquivo.
+          </p>
+          <p className="medida mt-2 text-sm text-ferro">
+            A autoria já está registrada no formulário — é de lá que sai tudo, inclusive seu nome
+            no e-book e no certificado. O arquivo sem nome serve só para que os avaliadores leiam
+            sem saber quem escreveu; nenhuma informação se perde.
+          </p>
         </div>
 
         <div>
@@ -638,6 +724,19 @@ export function FormularioMostra({
           <label htmlFor="imagens" className={rotuloCampo}>
             Imagens (opcional, até 2)
           </label>
+          <p className="mt-2 text-sm font-semibold text-listel">
+            Não identifique estudantes, nem nos textos das fotos. Fotos com estudante
+            reconhecível só com autorização válida — veja a{" "}
+            <a
+              href="/regulamento#secao-6"
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-4"
+            >
+              seção 6 do regulamento
+            </a>
+            .
+          </p>
           <input
             id="imagens"
             ref={imgRef}
@@ -738,10 +837,45 @@ export function FormularioMostra({
               className="mt-0.5 h-5 w-5 accent-[var(--listel)]"
             />
             <span>
-              Declaro que a prática relatada aconteceu de verdade e que o texto é de minha autoria
+              Declaro que a prática relatada aconteceu de verdade, que o texto é de minha
+              autoria e que tenho autorização de uso de fotografias, ilustrações e outros
+              materiais de terceiros eventualmente incluídos, inclusive imagens geradas por IA
             </span>
           </label>
           <Erro id="erro-originalidade" texto={erros["originalidade"]} />
+        </div>
+
+        <div>
+          <label
+            className={`flex cursor-pointer items-start gap-3 rounded-xl border p-4 text-base text-tinta transition-colors hover:bg-neve ${
+              decDireitosAutorais ? "border-tinta" : borda("direitosAutorais")
+            }`}
+          >
+            <input
+              type="checkbox"
+              checked={decDireitosAutorais}
+              aria-invalid={!!erros["direitosAutorais"]}
+              aria-describedby={erros["direitosAutorais"] ? "erro-direitos-autorais" : undefined}
+              onChange={(e) => {
+                setDecDireitosAutorais(e.target.checked);
+                limpa("direitosAutorais");
+              }}
+              className="mt-0.5 h-5 w-5 accent-[var(--listel)]"
+            />
+            <span>
+              Autorizo a publicação deste relato no e-book e nos materiais do Summit, de forma
+              gratuita e não exclusiva, com crédito de autoria, conforme a{" "}
+              <a
+                href="/regulamento#secao-14"
+                target="_blank"
+                rel="noreferrer"
+                className="font-semibold text-listel underline underline-offset-4"
+              >
+                seção 14 do regulamento
+              </a>
+            </span>
+          </label>
+          <Erro id="erro-direitos-autorais" texto={erros["direitosAutorais"]} />
         </div>
       </Bloco>
 

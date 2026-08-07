@@ -20,8 +20,10 @@ const MSG = {
     "Esse arquivo tem mais de 10 MB. Tente salvar de novo reduzindo as imagens de dentro do documento.",
   imagemTipo: "As imagens precisam ser .jpg ou .png.",
   declaracao: "Para enviar, é preciso marcar esta declaração.",
+  direitosAutorais: "Para enviar, é preciso aceitar as condições de publicação e direitos autorais.",
   inscricao_nao_habilitada: `Sua inscrição não prevê o relato do ProLEEI. Fale com a organização pelo WhatsApp ${WHATS_ORG}.`,
   prazo_encerrado: "O prazo de submissão encerrou em 23 de agosto de 2026.",
+  prazo_nao_aberto: "As submissões ainda não abriram. Elas começam em 5 de agosto de 2026.",
   sem_participantes: "Adicione pelo menos um participante.",
   generico: `Não conseguimos registrar o relato agora. Seus arquivos não foram perdidos — tente de novo em instantes ou fale com a organização pelo WhatsApp ${WHATS_ORG}.`,
 };
@@ -91,6 +93,7 @@ export function FormularioProleei({
   const [docx, setDocx] = React.useState<File | null>(null);
   const [imagens, setImagens] = React.useState<File[]>([]);
   const [declaracao, setDeclaracao] = React.useState(false);
+  const [decDireitosAutorais, setDecDireitosAutorais] = React.useState(false);
 
   const [erros, setErros] = React.useState<Record<string, string | undefined>>({});
   const [erroGeral, setErroGeral] = React.useState("");
@@ -191,6 +194,7 @@ export function FormularioProleei({
 
     if (!docx) novos["docx"] = MSG.docx;
     if (!declaracao) novos["declaracao"] = MSG.declaracao;
+    if (!decDireitosAutorais) novos["direitosAutorais"] = MSG.direitosAutorais;
 
     setErros(novos);
     return Object.keys(novos).length === 0;
@@ -257,6 +261,7 @@ export function FormularioProleei({
         p_docx_path: docxPath,
         p_imagens: caminhosImagens,
         p_declaracao: declaracao,
+        p_declaracao_direitos_autorais: decDireitosAutorais,
         p_participantes: lista,
       });
 
@@ -265,6 +270,7 @@ export function FormularioProleei({
         const bruto = `${error.message} ${error.details ?? ""}`;
         if (bruto.includes("inscricao_nao_habilitada")) setErroGeral(MSG.inscricao_nao_habilitada);
         else if (bruto.includes("prazo_encerrado")) setErroGeral(MSG.prazo_encerrado);
+        else if (bruto.includes("prazo_nao_aberto")) setErroGeral(MSG.prazo_nao_aberto);
         else if (bruto.includes("sem_participantes")) setErroGeral(MSG.sem_participantes);
         else setErroGeral(MSG.generico);
         return;
@@ -455,6 +461,19 @@ export function FormularioProleei({
           <label htmlFor="imagens" className={rotuloCampo}>
             Imagens (opcional)
           </label>
+          <p className="mt-2 text-sm font-semibold text-listel">
+            Não identifique estudantes, nem nos textos das fotos. Fotos com estudante
+            reconhecível só com autorização válida — veja a{" "}
+            <a
+              href="/regulamento#secao-6"
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-4"
+            >
+              seção 6 do regulamento
+            </a>
+            .
+          </p>
           <input
             id="imagens"
             ref={imgRef}
@@ -504,6 +523,39 @@ export function FormularioProleei({
             </span>
           </label>
           <Erro id="erro-declaracao" texto={erros["declaracao"]} />
+        </div>
+
+        <div>
+          <label
+            className={`flex cursor-pointer items-start gap-3 rounded-xl border p-4 text-base text-tinta transition-colors hover:bg-neve ${
+              decDireitosAutorais ? "border-tinta" : borda("direitosAutorais")
+            }`}
+          >
+            <input
+              type="checkbox"
+              checked={decDireitosAutorais}
+              aria-invalid={!!erros["direitosAutorais"]}
+              aria-describedby={erros["direitosAutorais"] ? "erro-direitos-autorais" : undefined}
+              onChange={(e) => {
+                setDecDireitosAutorais(e.target.checked);
+                limpa("direitosAutorais");
+              }}
+              className="mt-0.5 h-5 w-5 accent-[var(--listel)]"
+            />
+            <span>
+              Autorizo a publicação deste relato no e-book e nos materiais do Summit, de forma
+              gratuita e não exclusiva, com crédito de autoria, conforme a{" "}
+              <a
+                href="/regulamento#secao-14"
+                target="_blank"
+                rel="noreferrer"
+                className="font-semibold text-listel underline underline-offset-4"
+              >
+                seção 14 do regulamento
+              </a>
+            </span>
+          </label>
+          <Erro id="erro-direitos-autorais" texto={erros["direitosAutorais"]} />
         </div>
       </Bloco>
 

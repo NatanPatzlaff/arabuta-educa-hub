@@ -32,53 +32,6 @@ export type Database = {
         }
         Relationships: []
       }
-      avaliacoes_mostra: {
-        Row: {
-          avaliador_nome: string
-          criado_em: string
-          id: string
-          nota_clareza: number
-          nota_intencionalidade: number
-          nota_normas: number
-          nota_replicacao: number
-          nota_resultados: number
-          observacao: string | null
-          relato_mostra_id: string
-        }
-        Insert: {
-          avaliador_nome: string
-          criado_em?: string
-          id?: string
-          nota_clareza: number
-          nota_intencionalidade: number
-          nota_normas: number
-          nota_replicacao: number
-          nota_resultados: number
-          observacao?: string | null
-          relato_mostra_id: string
-        }
-        Update: {
-          avaliador_nome?: string
-          criado_em?: string
-          id?: string
-          nota_clareza?: number
-          nota_intencionalidade?: number
-          nota_normas?: number
-          nota_replicacao?: number
-          nota_resultados?: number
-          observacao?: string | null
-          relato_mostra_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "avaliacoes_mostra_relato_mostra_id_fkey"
-            columns: ["relato_mostra_id"]
-            isOneToOne: false
-            referencedRelation: "relatos_mostra"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       coautores: {
         Row: {
           contribuicao: string
@@ -254,10 +207,8 @@ export type Database = {
           autorizacao_imagem: boolean
           categoria: Database["public"]["Enums"]["categoria_relato"]
           codigo: string
-          contribuicao_autor_principal: string
           created_at: string
           declaracao_coautoria: boolean
-          declaracao_direitos_autorais: boolean
           declaracao_originalidade: boolean
           id: string
           imagens: string[]
@@ -273,10 +224,8 @@ export type Database = {
           autorizacao_imagem?: boolean
           categoria: Database["public"]["Enums"]["categoria_relato"]
           codigo: string
-          contribuicao_autor_principal?: string
           created_at?: string
           declaracao_coautoria?: boolean
-          declaracao_direitos_autorais?: boolean
           declaracao_originalidade: boolean
           id?: string
           imagens?: string[]
@@ -292,10 +241,8 @@ export type Database = {
           autorizacao_imagem?: boolean
           categoria?: Database["public"]["Enums"]["categoria_relato"]
           codigo?: string
-          contribuicao_autor_principal?: string
           created_at?: string
           declaracao_coautoria?: boolean
-          declaracao_direitos_autorais?: boolean
           declaracao_originalidade?: boolean
           id?: string
           imagens?: string[]
@@ -320,7 +267,6 @@ export type Database = {
           arquivo_docx_path: string
           codigo: string
           created_at: string
-          declaracao_direitos_autorais: boolean
           declaracao_protecao_dados: boolean
           id: string
           imagens: string[]
@@ -332,7 +278,6 @@ export type Database = {
           arquivo_docx_path: string
           codigo: string
           created_at?: string
-          declaracao_direitos_autorais?: boolean
           declaracao_protecao_dados: boolean
           id?: string
           imagens?: string[]
@@ -344,7 +289,6 @@ export type Database = {
           arquivo_docx_path?: string
           codigo?: string
           created_at?: string
-          declaracao_direitos_autorais?: boolean
           declaracao_protecao_dados?: boolean
           id?: string
           imagens?: string[]
@@ -373,9 +317,7 @@ export type Database = {
           p_autorizacao: boolean
           p_categoria: Database["public"]["Enums"]["categoria_relato"]
           p_coautores: Json
-          p_contribuicao_autor_principal: string
           p_declaracao_coautoria: boolean
-          p_declaracao_direitos_autorais: boolean
           p_declaracao_originalidade: boolean
           p_docx_path: string
           p_imagens: string[]
@@ -390,7 +332,6 @@ export type Database = {
       submeter_relato_proleei: {
         Args: {
           p_declaracao: boolean
-          p_declaracao_direitos_autorais: boolean
           p_docx_path: string
           p_imagens: string[]
           p_inscricao_id: string

@@ -494,9 +494,9 @@ function Index() {
       </section>
 
       {/* 10. RODAPÉ */}
-      <footer className="bg-tinta py-14 text-tinta-foreground">
+      <footer className="bg-tinta py-10 text-tinta-foreground">
         <div className="container-site">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-6">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-6">
             <div>
               <h2 className="text-xl">Fale com a organização</h2>
               <p className="mt-3 text-base">
@@ -509,21 +509,6 @@ function Index() {
                   WhatsApp (49) 99927-1442 — Maricelia
                 </a>
               </p>
-            </div>
-
-            {/* TODO: substituir os placeholders pelos logos reais:
-                brasão do município, Secretaria Municipal de Educação de Arabutã e Gen-Z Educação */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-1">
-              {["Brasão de Arabutã", "Secretaria Municipal de Educação", "Gen-Z Educação"].map(
-                (nome) => (
-                  <div
-                    key={nome}
-                    className="flex h-20 items-center justify-center rounded-xl border border-tinta-foreground/25 bg-tinta-foreground/10 px-3 text-center text-sm"
-                  >
-                    {nome}
-                  </div>
-                ),
-              )}
             </div>
 
             <div className="md:text-right">
@@ -544,7 +529,7 @@ function Index() {
             </div>
           </div>
 
-          <OndaJacutinga className="mt-10 h-5 w-full text-white/15" />
+          <OndaJacutinga className="mt-8 h-5 w-full text-white/15" />
         </div>
       </footer>
     </main>

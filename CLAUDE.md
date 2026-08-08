@@ -6,6 +6,21 @@ Realização: Gen-Z Educação · Secretaria Municipal de Educação de Arabutã
 
 O site é o **único canal oficial** de inscrição no evento e de envio de relatos. Não existe fluxo alternativo por e-mail, WhatsApp ou entrega física.
 
+O site já existe, já é funcional e já capta dados reais de participantes (inscrição + os dois formulários de relato). O objetivo de qualquer tarefa aqui é **evoluir e complementar**, não recriar do zero.
+
+---
+
+## Documentação do projeto — leia antes de trabalhar
+
+- [`docs/regulamento.md`](docs/regulamento.md) — regulamento oficial do evento. **Autoridade máxima, acima de qualquer spec, decisão de design ou pedido pontual.**
+- [`docs/requisitos.md`](docs/requisitos.md) — checklist derivado do regulamento, item por item.
+- [`specs/site.md`](specs/site.md) — o que o site faz hoje: fluxos de captação de dados, seções, stack, escopo. Documenta a implementação, não repete o regulamento.
+- [`specs/design.md`](specs/design.md) — identidade visual atual (baseline) e direção visual desejada.
+- [`docs/referencia-visual.md`](docs/referencia-visual.md) — valores exatos (hex, duration, cubic-bezier) extraídos de sites de referência para padrões de movimento e tipografia. Usar como base, não copiar 1:1.
+- [`memoria.md`](memoria.md) — decisões aprovadas/rejeitadas, alterações feitas, pendências e próximos passos.
+
+**Se um pedido conflitar com o regulamento, com `docs/requisitos.md`, ou com uma decisão já registrada em `specs/site.md`, `specs/design.md` ou `memoria.md`: pare e avise antes de fazer qualquer alteração.** Explique qual regra ou decisão seria afetada e pergunte como proceder — não decida sozinho por cima de uma decisão já tomada.
+
 ---
 
 ## Conformidade com o regulamento — REGRA PRINCIPAL
@@ -27,6 +42,14 @@ Este projeto tem um regulamento público que rege o evento. O site é um instrum
 - Parafrasear regras normativas (prazos, critérios, restrições) de um jeito que mude o sentido. Nesses trechos, mantenha-se fiel ao texto do regulamento.
 - Criar canal de envio fora da aba "Submeter prática exitosa".
 - Expor CPF em qualquer superfície pública.
+- Alterar a stack técnica (Vite + TypeScript + Supabase + bun) sem autorização explícita.
+- Remover ou reverter silenciosamente uma decisão já aprovada e registrada em `memoria.md` ou nas specs.
+- Inventar informação sobre o evento (datas, regras, premiação, categorias, palestrantes, programação) que não esteja em `docs/regulamento.md`.
+
+### Processo
+
+- Antes de uma mudança grande (nova página, novo fluxo, refatoração ampla), apresente um plano resumido antes de implementar.
+- Depois de uma decisão importante ser aprovada, registre em `memoria.md`.
 
 ### Ao escrever textos do site
 
@@ -75,3 +98,24 @@ WhatsApp (49) 99927-1442 — Maricelia. É o canal para dúvidas, ajuste de opç
 ## Comandos disponíveis
 
 - `/auditar-regulamento` — compara o estado atual do site com `docs/requisitos.md` e emite relatório de conformidade item por item.
+
+## Toda alteração visual usa as skills de design
+
+Sempre que a tarefa envolver visual do site (layout, cores, tipografia, espaçamento, componentes de UI, responsividade, hierarquia, animação) — mesmo que o usuário não peça explicitamente — invoque as skills de design relevantes antes de implementar, sem perguntar:
+
+- `impeccable` — para redesenhar, polir, revisar UX/hierarquia, resolver anti-padrões
+- `ui-ux-pro-max` — paletas, tipografia, componentes shadcn/ui, tokens de design
+- `responsive-craft` — layout responsivo, breakpoints, mobile
+- `frontend-design` — direção estética geral
+
+Ponytail continua ativo para lógica/código, mas não deve reduzir esforço visual — o modo atual (`lite`) já reflete isso.
+
+## graphify
+
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).

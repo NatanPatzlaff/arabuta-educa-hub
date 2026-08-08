@@ -20,8 +20,8 @@ export function BarraFixa() {
   return (
     <div
       aria-hidden={!visivel}
-      className={`fixed inset-x-0 top-0 z-50 border-b border-cinza bg-background shadow-[0_1px_3px_rgba(0,0,0,0.06)] transition-opacity duration-200 ${
-        visivel ? "opacity-100" : "pointer-events-none opacity-0"
+      className={`fixed inset-x-0 top-0 z-50 border-b border-cinza/70 bg-background/85 backdrop-blur-md sombra-card transition-all duration-300 ${
+        visivel ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
       }`}
     >
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-2">

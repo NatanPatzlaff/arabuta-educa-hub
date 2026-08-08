@@ -199,6 +199,52 @@
     font-family: var(--font-display);
     font-weight: 700;
     letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  /* Detalhes de navegador que também carregam a marca. */
+  ::selection {
+    background-color: var(--listel);
+    color: var(--listel-foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--listel);
+    outline-offset: 2px;
+  }
+
+  html {
+    scrollbar-color: var(--ferro) var(--neve);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--neve);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--cinza);
+    border-radius: 999px;
+    border: 2px solid var(--neve);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--ferro);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
@@ -230,4 +276,168 @@
 /* Medida de leitura: texto corrido nunca passa de 68ch */
 @utility medida {
   max-width: 68ch;
+}
+
+/* Sombra com offset e blur reais — nunca halo de offset zero. */
+@utility sombra-card {
+  box-shadow:
+    0 1px 2px oklch(0.18 0.01 60 / 6%),
+    0 8px 24px -12px oklch(0.18 0.01 60 / 18%);
+}
+
+@utility sombra-card-hover {
+  box-shadow:
+    0 2px 4px oklch(0.18 0.01 60 / 8%),
+    0 16px 36px -14px oklch(0.18 0.01 60 / 26%);
+}
+
+@utility sombra-acao {
+  box-shadow:
+    0 1px 2px oklch(0.52 0.19 27 / 25%),
+    0 10px 26px -10px oklch(0.52 0.19 27 / 45%);
+}
+
+/* Textura de grão sutil — quebra a planura "gerada por IA" sem virar decoração. */
+@utility grao {
+  position: relative;
+  isolation: isolate;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Aurora de fundo do hero: dois blends radiais em vermelho, deriva lenta. */
+@utility fundo-aurora {
+  position: absolute;
+  inset: -10%;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(38rem 26rem at 18% 12%, oklch(0.52 0.19 27 / 38%), transparent 65%),
+    radial-gradient(32rem 24rem at 82% 78%, oklch(0.43 0.16 27 / 32%), transparent 68%),
+    radial-gradient(28rem 20rem at 78% 8%, oklch(0.84 0.165 88 / 12%), transparent 70%);
+  filter: blur(2px);
+  animation: aurora-deriva 26s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-deriva {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(-2%, 2%, 0) scale(1.06);
+  }
+}
+
+/* Revelação ao rolar — um único gesto autoral, reaproveitado em todo o site. */
+@utility revela {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@utility revela-visivel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/*
+ * Escudo pinned do hero — exceção pontual à regra "sem scroll-jacking"
+ * (ver specs/design.md e memoria.md, 08/08/2026). CSS nativo, sem lib de animação:
+ * `position: sticky` + `animation-timeline: view()`. Estado base (sem suporte /
+ * prefers-reduced-motion) é o layout final estático — a camada de scroll é só
+ * enriquecimento progressivo, nunca esconde conteúdo.
+ */
+@utility escudo-track {
+  position: relative;
+}
+
+@utility escudo-pin {
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-block: 3.5rem;
+}
+
+@utility escudo-img {
+  width: min(38vw, 220px);
+  height: auto;
+}
+
+@utility escudo-conteudo {
+  opacity: 1;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .escudo-track {
+      height: 160vh;
+      view-timeline-name: --escudo-scroll;
+      view-timeline-axis: block;
+
+      @media (min-width: 640px) {
+        height: 200vh;
+      }
+    }
+
+    .escudo-pin {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      min-height: 0;
+      overflow: hidden;
+      padding-block: 0;
+    }
+
+    .escudo-img {
+      animation: escudo-encolhe linear both;
+      animation-timeline: --escudo-scroll;
+      animation-range: contain 0% contain 60%;
+    }
+
+    .escudo-conteudo {
+      opacity: 0;
+      animation: escudo-texto-entra linear both;
+      animation-timeline: --escudo-scroll;
+      animation-range: contain 10% contain 50%;
+    }
+  }
+}
+
+/*
+ * Anima `width` (não `transform: scale`) de propósito: a caixa de layout precisa
+ * encolher junto com a imagem, senão o espaço reservado do tamanho grande original
+ * fica vazio no fluxo e o título/CTA ficam longe do escudo já pequeno.
+ */
+@keyframes escudo-encolhe {
+  from {
+    width: min(60vw, 420px);
+    animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+  to {
+    width: min(14vw, 100px);
+  }
+}
+
+@keyframes escudo-texto-entra {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

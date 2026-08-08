@@ -1,9 +1,12 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Award, BookOpen, Mic } from "lucide-react";
+import { Award, BookOpen, Mic, TriangleAlert, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FolhaDivisor, OndaJacutinga, RaiosDeSol } from "@/components/site/graficos";
 import { BarraFixa } from "@/components/site/barra-fixa";
 import { ConsultaCpf } from "@/components/site/consulta-cpf";
+import { FundoHero } from "@/components/site/fundo-hero";
+import { EscudoHero } from "@/components/site/escudo-hero";
+import { Reveal } from "@/components/site/reveal";
 
 const DESC =
   "Um dia inteiro de formação para os profissionais da educação de Arabutã (SC). 8 de setembro de 2026, no Centro Educacional Esportivo e Cultural.";
@@ -73,12 +76,13 @@ const beneficios = [
 ];
 
 /** Cell padrão do bento. `tom` define o fundo em relação ao fundo da seção. */
-const cell = (tom: "branco" | "neve" | "preto") =>
+const cell = (tom: "branco" | "neve" | "preto", interativo = false) =>
   [
-    "rounded-xl border p-6 lg:p-8",
-    tom === "branco" && "border-cinza bg-card",
+    "rounded-xl border p-6 lg:p-8 transition-[box-shadow,transform] duration-300 ease-out",
+    tom === "branco" && "border-cinza bg-card sombra-card",
     tom === "neve" && "border-cinza bg-neve",
-    tom === "preto" && "border-tinta bg-tinta text-tinta-foreground shadow-sm",
+    tom === "preto" && "border-tinta bg-tinta text-tinta-foreground sombra-card",
+    interativo && "hover:-translate-y-1 hover:sombra-card-hover",
   ]
     .filter(Boolean)
     .join(" ");
@@ -129,34 +133,19 @@ function Index() {
       {/* 1. HERO */}
       <header
         id="hero"
-        className="relative w-full overflow-hidden bg-tinta pb-16 pt-14 text-tinta-foreground sm:pt-16"
+        className="relative w-full bg-tinta pb-16 pt-14 text-tinta-foreground sm:pt-20"
       >
-        <RaiosDeSol className="pointer-events-none absolute -top-6 left-1/2 h-16 w-56 -translate-x-1/2 text-sol/60" />
-        <div className="container-site">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="mt-6 text-4xl leading-tight sm:text-5xl">
-              1º Summit de Educação de Arabutã
-            </h1>
-            <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-tinta-foreground/70">
-              2º Seminário Municipal de Educação
-            </p>
-            <p className="mt-4 text-lg text-tinta-foreground/90">
-              Encontro de pessoas, práticas e ideias que movimentam a educação
-            </p>
-            <p className="mt-6 text-base text-tinta-foreground/80">
-              8 de setembro de 2026 · Centro Educacional Esportivo e Cultural · Arabutã (SC)
-            </p>
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button asChild variant="acao" size="xl" className="w-full sm:w-auto">
-                <Link to="/inscricao">Quero me inscrever</Link>
-              </Button>
-              <Button asChild variant="contorno" size="xl" className="w-full sm:w-auto">
-                <a href="#envio-relato">Enviar meu relato</a>
-              </Button>
-            </div>
-          </div>
+        {/* overflow-hidden isolado aqui (não no header): um header com overflow-hidden
+            vira "scroll container" para efeitos de view-timeline, o que quebra o pin
+            do EscudoHero (ver memoria.md, 08/08/2026). */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <FundoHero />
+          <RaiosDeSol className="absolute -top-6 left-1/2 z-[1] h-16 w-56 -translate-x-1/2 text-sol/60" />
         </div>
-        <OndaJacutinga className="absolute inset-x-0 bottom-0 h-6 w-full text-white/15" />
+        <div className="container-site relative z-[2]">
+          <EscudoHero />
+        </div>
+        <OndaJacutinga className="absolute inset-x-0 bottom-0 z-[1] h-6 w-full text-white/15" />
       </header>
 
       {/* 2. EPÍGRAFE */}
@@ -176,7 +165,9 @@ function Index() {
       {/* 3. O QUE É O SUMMIT */}
       <section className="section-pad">
         <div className="container-site">
-          <h2 className="text-2xl text-tinta sm:text-3xl">O que é o Summit</h2>
+          <Reveal>
+            <h2 className="text-2xl text-tinta sm:text-3xl">O que é o Summit</h2>
+          </Reveal>
           <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12">
             <div className={`${cell("neve")} flex items-center lg:col-span-7 lg:row-span-2`}>
               <p className="medida text-lg leading-relaxed text-tinta">
@@ -213,12 +204,13 @@ function Index() {
       {/* 4. PROGRAMAÇÃO */}
       <section className="section-pad">
         <div className="container-site grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-6">
-          <div className="lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
+          <Reveal className="lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
             <h2 className="text-2xl text-tinta sm:text-3xl">Programação</h2>
-            <p className="mt-3 inline-block rounded-md border-l-4 border-sol bg-sol-suave px-3 py-1.5 text-sm font-semibold text-sol-foreground">
+            <p className="mt-3 inline-flex items-center gap-2 rounded-full bg-sol-suave px-3.5 py-1.5 text-sm font-semibold text-sol-foreground">
+              <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-sol" />
               Programação preliminar, sujeita a ajustes.
             </p>
-          </div>
+          </Reveal>
 
           <div className="lg:col-span-7 lg:col-start-6">
             <RotuloPeriodo>Manhã</RotuloPeriodo>
@@ -243,7 +235,9 @@ function Index() {
       {/* 5. MOSTRA DE PRÁTICAS EXITOSAS + 6. ProLEEI */}
       <section className="bg-neve section-pad">
         <div className="container-site">
-          <h2 className="text-2xl text-tinta sm:text-3xl">Mostra de Práticas Exitosas</h2>
+          <Reveal>
+            <h2 className="text-2xl text-tinta sm:text-3xl">Mostra de Práticas Exitosas</h2>
+          </Reveal>
 
           <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-12">
             <div className={`${cell("branco")} flex items-center sm:col-span-2 lg:col-span-6`}>
@@ -261,7 +255,7 @@ function Index() {
             {beneficios.map(({ icone: Icone, texto }) => (
               <div
                 key={texto}
-                className={`${cell("branco")} flex flex-col justify-center gap-3 lg:col-span-2`}
+                className={`${cell("branco", true)} flex flex-col justify-center gap-3 lg:col-span-2`}
               >
                 <Icone aria-hidden="true" className="h-6 w-6 shrink-0 text-listel" />
                 <span className="text-base font-medium leading-snug text-tinta">{texto}</span>
@@ -286,8 +280,9 @@ function Index() {
             </div>
 
             <div
-              className={`${cell("preto")} border-l-4 border-l-listel sm:col-span-2 lg:col-span-12`}
+              className={`${cell("preto")} flex items-start gap-4 sm:col-span-2 lg:col-span-12`}
             >
+              <TriangleAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-sol" />
               <p className="text-base font-semibold text-tinta-foreground">
                 O relato só é aceito pela aba de submissão deste site. Não são aceitos relatos por
                 WhatsApp, e-mail ou impressos.
@@ -329,16 +324,18 @@ function Index() {
       {/* 7. COMO ESCREVER SEU RELATO */}
       <section className="section-pad">
         <div className="container-site">
-          <h2 className="text-2xl text-tinta sm:text-3xl">Como escrever seu relato</h2>
-          <p className="medida mt-5 text-lg text-tinta">
-            O relato tem sete partes. Vá seguindo na ordem, com calma:
-          </p>
+          <Reveal>
+            <h2 className="text-2xl text-tinta sm:text-3xl">Como escrever seu relato</h2>
+            <p className="medida mt-5 text-lg text-tinta">
+              O relato tem sete partes. Vá seguindo na ordem, com calma:
+            </p>
+          </Reveal>
 
           <ol className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {partesRelato.map((parte, i) => (
               <li
                 key={parte}
-                className={`${cell("neve")} flex items-start gap-4 p-6 lg:p-6 ${
+                className={`${cell("neve", true)} flex items-start gap-4 p-6 lg:p-6 ${
                   i === partesRelato.length - 1 ? "sm:col-span-2" : ""
                 }`}
               >
@@ -373,25 +370,31 @@ function Index() {
             </div>
           </div>
 
-          <div className="mt-4 rounded-xl border-l-4 border-listel bg-neve p-5">
-            <p className="text-base font-semibold text-tinta">
-              Não escreva seu nome dentro do arquivo do relato.
-            </p>
-            <p className="medida mt-2 text-sm text-ferro">
-              A autoria é registrada aqui no site, no formulário de envio — é de lá que sai tudo,
-              inclusive o seu nome no e-book e no certificado. Manter o arquivo sem nome serve só
-              para que os avaliadores leiam sem saber quem escreveu; nenhuma informação se perde.
-            </p>
+          <div className="mt-4 flex items-start gap-4 rounded-xl border border-cinza bg-neve p-5">
+            <TriangleAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-listel" />
+            <div>
+              <p className="text-base font-semibold text-tinta">
+                Não escreva seu nome dentro do arquivo do relato.
+              </p>
+              <p className="medida mt-2 text-sm text-ferro">
+                A autoria é registrada aqui no site, no formulário de envio — é de lá que sai tudo,
+                inclusive o seu nome no e-book e no certificado. Manter o arquivo sem nome serve só
+                para que os avaliadores leiam sem saber quem escreveu; nenhuma informação se perde.
+              </p>
+            </div>
           </div>
 
-          <div className="mt-4 rounded-xl border-l-4 border-listel bg-neve p-5">
-            <p className="text-base font-semibold text-tinta">
-              Ao usar o agente de IA, não informe dados de estudantes.
-            </p>
-            <p className="medida mt-2 text-sm text-ferro">
-              Não informe nomes, iniciais, diagnósticos, condições de saúde ou situações
-              familiares. Use descrições gerais, como "um estudante" ou "parte do grupo".
-            </p>
+          <div className="mt-4 flex items-start gap-4 rounded-xl border border-cinza bg-neve p-5">
+            <TriangleAlert aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-listel" />
+            <div>
+              <p className="text-base font-semibold text-tinta">
+                Ao usar o agente de IA, não informe dados de estudantes.
+              </p>
+              <p className="medida mt-2 text-sm text-ferro">
+                Não informe nomes, iniciais, diagnósticos, condições de saúde ou situações
+                familiares. Use descrições gerais, como "um estudante" ou "parte do grupo".
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -401,11 +404,13 @@ function Index() {
       {/* 7.5 PROTEÇÃO DOS ESTUDANTES */}
       <section className="section-pad">
         <div className="container-site">
-          <h2 className="text-2xl text-tinta sm:text-3xl">Proteção dos estudantes</h2>
-          <p className="medida mt-5 text-lg leading-relaxed text-tinta">
-            O e-book é uma publicação digital e aberta, distribuída por QR code e link, sem
-            versão impressa. Por isso, ao escrever o relato e escolher as fotos:
-          </p>
+          <Reveal>
+            <h2 className="text-2xl text-tinta sm:text-3xl">Proteção dos estudantes</h2>
+            <p className="medida mt-5 text-lg leading-relaxed text-tinta">
+              O e-book é uma publicação digital e aberta, distribuída por QR code e link, sem
+              versão impressa. Por isso, ao escrever o relato e escolher as fotos:
+            </p>
+          </Reveal>
 
           <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
             <div className={cell("neve")}>
@@ -426,7 +431,8 @@ function Index() {
             </div>
           </div>
 
-          <div className={`${cell("preto")} mt-6 border-l-4 border-l-listel`}>
+          <div className={`${cell("preto")} mt-6 flex items-center gap-4`}>
+            <ShieldCheck aria-hidden="true" className="h-5 w-5 shrink-0 text-sol" />
             <p className="text-base font-semibold text-tinta-foreground">
               O mesmo vale para colegas de trabalho.
             </p>
@@ -439,7 +445,9 @@ function Index() {
       {/* 8. DATAS IMPORTANTES */}
       <section className="section-pad">
         <div className="container-site">
-          <h2 className="text-center text-2xl text-tinta sm:text-3xl">Datas importantes</h2>
+          <Reveal as="div" className="text-center">
+            <h2 className="text-2xl text-tinta sm:text-3xl">Datas importantes</h2>
+          </Reveal>
           <ol className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-5 md:gap-4">
             {datas.map((d) => {
               const destaque = d.dia === "23/08";
@@ -448,15 +456,18 @@ function Index() {
                   key={d.dia}
                   className={
                     destaque
-                      ? "flex items-center gap-4 rounded-xl bg-tinta p-4 md:flex-col md:text-center"
-                      : "flex items-center gap-4 border-l-4 border-listel pl-4 md:flex-col md:border-l-0 md:border-t-4 md:pl-0 md:pt-4 md:text-center"
+                      ? "flex items-center gap-4 rounded-xl bg-tinta p-4 sombra-card transition-transform duration-300 hover:-translate-y-1 md:flex-col md:text-center"
+                      : "flex items-center gap-4 rounded-xl p-4 transition-transform duration-300 hover:-translate-y-1 md:flex-col md:text-center"
                   }
                 >
+                  {!destaque && (
+                    <span aria-hidden="true" className="hidden h-2 w-2 rounded-full bg-listel md:block" />
+                  )}
                   <span
                     className={
                       destaque
-                        ? "font-display text-2xl font-bold text-sol"
-                        : "font-display text-2xl font-bold text-listel"
+                        ? "font-display text-2xl font-bold tabular-nums text-sol"
+                        : "font-display text-2xl font-bold tabular-nums text-listel"
                     }
                   >
                     {d.dia}
@@ -476,13 +487,13 @@ function Index() {
       {/* 9. ÁREA DE ENVIO DE RELATO */}
       <section id="envio-relato" className="scroll-mt-6 bg-neve section-pad">
         <div className="container-site grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-6">
-          <div className="lg:col-span-5">
+          <Reveal className="lg:col-span-5">
             <h2 className="text-2xl text-tinta sm:text-3xl">Submeter prática exitosa</h2>
             <p className="medida mt-5 text-lg leading-relaxed text-tinta">
               Para começar, informe o seu CPF. Ele serve só para identificar o seu envio e conferir
               os seus dados — nada aparece publicamente no site.
             </p>
-          </div>
+          </Reveal>
 
           <div className={`${cell("branco")} lg:col-span-6 lg:col-start-7`}>
             <ConsultaCpf
@@ -494,7 +505,11 @@ function Index() {
       </section>
 
       {/* 10. RODAPÉ */}
-      <footer className="bg-tinta py-10 text-tinta-foreground">
+      <footer className="relative bg-tinta py-10 text-tinta-foreground">
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-listel to-transparent"
+        />
         <div className="container-site">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-6">
             <div>

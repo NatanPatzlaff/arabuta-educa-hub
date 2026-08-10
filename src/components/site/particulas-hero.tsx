@@ -78,7 +78,7 @@ export function ParticulasHero() {
       {PARTICULAS.map(({ Icone, top, left, size, duracao, atraso, ...resto }, i) => (
         <Icone
           key={i}
-          className={`particula-flutua absolute text-tinta-foreground/[0.07] ${
+          className={`particula-flutua absolute text-tinta-foreground/[0.13] ${
             "soDesktop" in resto ? "hidden sm:block" : ""
           }`}
           style={

@@ -214,8 +214,38 @@ export function AvaliacaoRelatos() {
   const [relatosProleei, setRelatosProleei] = React.useState<RelatoProleei[]>([]);
   const [carregando, setCarregando] = React.useState(true);
   const [erro, setErro] = React.useState("");
+  const [acesso, setAcesso] = React.useState<"carregando" | "deslogado" | "liberado">("carregando");
+  const [aviso, setAviso] = React.useState("");
+
+  const verificarAcesso = React.useCallback(async () => {
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) {
+      setAcesso("deslogado");
+      return;
+    }
+    const { data: ehAdmin, error } = await supabase.rpc("is_admin");
+    if (error || !ehAdmin) {
+      await supabase.auth.signOut();
+      setAviso("Este acesso é restrito à comissão organizadora e aos avaliadores cadastrados.");
+      setAcesso("deslogado");
+      return;
+    }
+    setAviso("");
+    setAcesso("liberado");
+  }, []);
 
   React.useEffect(() => {
+    void verificarAcesso();
+    const { data: sub } = supabase.auth.onAuthStateChange((evento) => {
+      if (evento === "SIGNED_IN" || evento === "SIGNED_OUT" || evento === "USER_UPDATED") {
+        void verificarAcesso();
+      }
+    });
+    return () => sub.subscription.unsubscribe();
+  }, [verificarAcesso]);
+
+  React.useEffect(() => {
+    if (acesso !== "liberado") return;
     let ativo = true;
     (async () => {
       setCarregando(true);
@@ -225,7 +255,7 @@ export function AvaliacaoRelatos() {
           .from("relatos_mostra")
           .select("id, codigo, titulo, categoria, arquivo_docx_path, arquivo_pdf_path, imagens")
           .eq("modo_participacao", "palco")
-          .eq("status_habilitacao", "habilitado")
+          .neq("status_habilitacao", "inabilitado")
           .order("created_at", { ascending: true }),
         supabase
           .from("relatos_proleei")
@@ -245,7 +275,25 @@ export function AvaliacaoRelatos() {
     return () => {
       ativo = false;
     };
-  }, []);
+  }, [acesso]);
+
+  if (acesso === "carregando") {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-neve">
+        <p className="text-sm text-ferro">Carregando...</p>
+      </main>
+    );
+  }
+
+  if (acesso === "deslogado") {
+    return (
+      <Login
+        aviso={aviso}
+        titulo="Avaliação dos relatos"
+        descricao="Entre com o acesso fornecido pela organização para avaliar os relatos."
+      />
+    );
+  }
 
   return (
     <main className="min-h-screen bg-neve px-4 py-8 sm:px-6 lg:px-8">

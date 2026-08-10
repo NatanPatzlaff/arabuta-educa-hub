@@ -2,6 +2,7 @@ import * as React from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { LinkArquivo } from "@/components/admin/base";
+import { Login } from "@/components/admin/login";
 import type { Database } from "@/integrations/supabase/types";
 
 type RelatoMostra = {

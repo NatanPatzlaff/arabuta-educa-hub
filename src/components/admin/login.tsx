@@ -3,6 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { campoAdmin, rotuloCampo } from "@/components/admin/base";
 
+const CHAVE_EMAIL = "summit-login-email";
+
 export function Login({
   aviso,
   titulo = "Área da organização",
@@ -16,6 +18,15 @@ export function Login({
   const [senha, setSenha] = React.useState("");
   const [erro, setErro] = React.useState("");
   const [entrando, setEntrando] = React.useState(false);
+
+  React.useEffect(() => {
+    const salvo = window.localStorage.getItem(CHAVE_EMAIL);
+    if (salvo) setEmail(salvo);
+  }, []);
+
+  React.useEffect(() => {
+    window.localStorage.setItem(CHAVE_EMAIL, email);
+  }, [email]);
 
   const entrar = async (evento: React.FormEvent) => {
     evento.preventDefault();

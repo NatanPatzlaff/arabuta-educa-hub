@@ -35,12 +35,16 @@ function PaginaAdmin() {
   const [aviso, setAviso] = React.useState("");
 
   const avaliar = React.useCallback(async () => {
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) {
+    const { data: sessao } = await supabase.auth.getSession();
+    const usuarioSessao = sessao.session?.user;
+    if (!usuarioSessao) {
       setEstado("deslogado");
       setEmail("");
       return;
     }
+
+    const { data } = await supabase.auth.getUser();
+    const usuario = data.user ?? usuarioSessao;
     const { data: ehAdmin, error } = await supabase.rpc("is_admin");
     if (error || !ehAdmin) {
       await supabase.auth.signOut();
@@ -49,7 +53,7 @@ function PaginaAdmin() {
       return;
     }
     setAviso("");
-    setEmail(data.user.email ?? "");
+    setEmail(usuario.email ?? "");
     setEstado("admin");
   }, []);
 

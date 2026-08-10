@@ -296,11 +296,14 @@ export function AvaliacaoRelatos() {
   const [aviso, setAviso] = React.useState("");
 
   const verificarAcesso = React.useCallback(async () => {
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) {
+    const { data: sessao } = await supabase.auth.getSession();
+    const usuarioSessao = sessao.session?.user;
+    if (!usuarioSessao) {
       setAcesso("deslogado");
       return;
     }
+    const { data } = await supabase.auth.getUser();
+    const usuario = data.user ?? usuarioSessao;
     const { data: ehAdmin, error } = await supabase.rpc("is_admin");
     if (error || !ehAdmin) {
       await supabase.auth.signOut();
@@ -309,6 +312,7 @@ export function AvaliacaoRelatos() {
       return;
     }
     setAviso("");
+    void usuario;
     setAcesso("liberado");
   }, []);
 

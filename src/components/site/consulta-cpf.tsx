@@ -48,7 +48,7 @@ export function ConsultaCpf({
         inscricao_id: resposta.inscricao_id,
         primeiro_nome: resposta.primeiro_nome ?? "",
         nome_completo: resposta.nome_completo ?? resposta.primeiro_nome ?? "",
-        cpf: resposta.cpf,
+        cpf: resposta.cpf ?? "",
         pode_mostra: resposta.pode_mostra,
         pode_proleei: resposta.pode_proleei,
         nao_vai_enviar: resposta.nao_vai_enviar,

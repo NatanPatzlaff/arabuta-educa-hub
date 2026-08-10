@@ -251,9 +251,9 @@ export type Database = {
         Row: {
           arquivo_docx_path: string
           arquivo_pdf_path: string | null
-          autorizacao_imagem: boolean
           autor_cpf: string
           autor_nome: string
+          autorizacao_imagem: boolean
           categoria: Database["public"]["Enums"]["categoria_relato"]
           codigo: string
           contribuicao_autor_principal: string
@@ -274,9 +274,9 @@ export type Database = {
         Insert: {
           arquivo_docx_path: string
           arquivo_pdf_path?: string | null
-          autorizacao_imagem?: boolean
           autor_cpf?: string
           autor_nome?: string
+          autorizacao_imagem?: boolean
           categoria: Database["public"]["Enums"]["categoria_relato"]
           codigo: string
           contribuicao_autor_principal?: string
@@ -297,9 +297,9 @@ export type Database = {
         Update: {
           arquivo_docx_path?: string
           arquivo_pdf_path?: string | null
-          autorizacao_imagem?: boolean
           autor_cpf?: string
           autor_nome?: string
+          autorizacao_imagem?: boolean
           categoria?: Database["public"]["Enums"]["categoria_relato"]
           codigo?: string
           contribuicao_autor_principal?: string
@@ -388,9 +388,9 @@ export type Database = {
       is_admin: { Args: never; Returns: boolean }
       submeter_relato_mostra: {
         Args: {
-          p_autorizacao: boolean
           p_autor_cpf: string
           p_autor_nome: string
+          p_autorizacao: boolean
           p_categoria: Database["public"]["Enums"]["categoria_relato"]
           p_coautores: Json
           p_contribuicao_autor_principal: string

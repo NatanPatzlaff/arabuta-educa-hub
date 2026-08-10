@@ -104,11 +104,11 @@ function CardMostra({ relato }: { relato: RelatoMostra }) {
     const { error } = await supabase.from("avaliacoes_mostra").insert({
       relato_mostra_id: relato.id,
       avaliador_nome: avaliadorNome.trim(),
-      nota_resultados: valores.nota_resultados,
-      nota_clareza: valores.nota_clareza,
-      nota_replicacao: valores.nota_replicacao,
-      nota_intencionalidade: valores.nota_intencionalidade,
-      nota_normas: valores.nota_normas,
+      nota_resultados: valores['nota_resultados'] ?? 0,
+      nota_clareza: valores['nota_clareza'] ?? 0,
+      nota_replicacao: valores['nota_replicacao'] ?? 0,
+      nota_intencionalidade: valores['nota_intencionalidade'] ?? 0,
+      nota_normas: valores['nota_normas'] ?? 0,
       observacao: null,
     });
     setSalvando(false);

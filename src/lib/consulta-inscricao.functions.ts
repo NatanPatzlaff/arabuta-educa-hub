@@ -8,6 +8,8 @@ export type ConsultaResposta =
       encontrado: boolean;
       inscricao_id?: string;
       primeiro_nome?: string;
+      nome_completo?: string;
+      cpf?: string;
       pode_mostra: boolean;
       pode_proleei: boolean;
       nao_vai_enviar: boolean;
@@ -51,7 +53,7 @@ export const consultarInscricao = createServerFn({ method: "POST" })
 
       const { data: inscricao, error } = await supabaseAdmin
         .from("inscricoes")
-        .select("id, nome_completo, quer_palco, quer_ebook, quer_proleei, nao_vai_enviar")
+        .select("id, nome_completo, cpf, quer_palco, quer_ebook, quer_proleei, nao_vai_enviar")
         .eq("cpf", cpf)
         .maybeSingle();
 
@@ -64,6 +66,8 @@ export const consultarInscricao = createServerFn({ method: "POST" })
         encontrado: true,
         inscricao_id: inscricao.id,
         primeiro_nome: primeiro,
+        nome_completo: inscricao.nome_completo?.trim() || primeiro,
+        cpf: inscricao.cpf,
         pode_mostra: inscricao.quer_palco || inscricao.quer_ebook,
         pode_proleei: inscricao.quer_proleei,
         nao_vai_enviar: inscricao.nao_vai_enviar,

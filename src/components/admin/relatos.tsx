@@ -20,6 +20,8 @@ type RelatoMostra = {
   modo_participacao: string;
   created_at: string;
   inscricao_id: string;
+  autor_nome: string;
+  autor_cpf: string;
   arquivo_docx_path: string;
   arquivo_pdf_path: string | null;
   imagens: string[];
@@ -104,7 +106,7 @@ function AbaMostra() {
       const { data } = await supabase
         .from("relatos_mostra")
         .select(
-          "id, codigo, titulo, categoria, modo_participacao, created_at, inscricao_id, arquivo_docx_path, arquivo_pdf_path, imagens, inscricoes(nome_completo, email, cpf), coautores(nome, cpf, email, contribuicao, ordem)",
+          "id, codigo, titulo, categoria, modo_participacao, created_at, inscricao_id, autor_nome, autor_cpf, arquivo_docx_path, arquivo_pdf_path, imagens, inscricoes(nome_completo, email, cpf), coautores(nome, cpf, email, contribuicao, ordem)",
         )
         .order("created_at", { ascending: false });
       if (!ativo) return;
@@ -137,8 +139,8 @@ function AbaMostra() {
         r.codigo,
         r.titulo,
         ROTULO_CATEGORIA[r.categoria] ?? r.categoria,
-        r.inscricoes?.nome_completo ?? "",
-        mascaraCpfExibicao(r.inscricoes?.cpf),
+        r.autor_nome || r.inscricoes?.nome_completo || "",
+        mascaraCpfExibicao(r.autor_cpf || r.inscricoes?.cpf),
         r.inscricoes?.email ?? "",
         [...r.coautores].sort((a, b) => a.ordem - b.ordem).map((c) => c.nome).join("; "),
         [...r.coautores]
@@ -185,7 +187,7 @@ function AbaMostra() {
                 </td>
                 <td className={td}>{ROTULO_CATEGORIA[r.categoria] ?? r.categoria}</td>
                 <td className={td}>
-                  {r.inscricoes?.nome_completo ?? "—"}
+                  {r.autor_nome || r.inscricoes?.nome_completo || "—"}
                   {seloEnvio(ordinais[r.id]) && <Selo texto={seloEnvio(ordinais[r.id])!} />}
                 </td>
                 <td className={td}>

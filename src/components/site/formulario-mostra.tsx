@@ -29,6 +29,8 @@ const MSG = {
   coautoria: "Marque a declaração de coautoria.",
   originalidade: "Para enviar, é preciso marcar a declaração de originalidade.",
   direitosAutorais: "Para enviar, é preciso aceitar as condições de publicação e direitos autorais.",
+  autorNome: "Escreva o nome completo do autor responsável.",
+  autorCpf: "Esse CPF não parece válido. Confira os números.",
   contribuicaoAutor: "Descreva a sua contribuição para a prática.",
   coautorNome: "Escreva o nome completo do coautor.",
   coautorCpf: "Esse CPF não parece válido. Confira os números.",
@@ -119,6 +121,8 @@ export function FormularioMostra({
   onSucesso: (resultado: ResultadoMostra) => void;
 }) {
   const [titulo, setTitulo] = React.useState("");
+  const [autorNome, setAutorNome] = React.useState(sessao.nome_completo ?? sessao.primeiro_nome ?? "");
+  const [autorCpf, setAutorCpf] = React.useState(sessao.cpf ?? "");
   const [categoria, setCategoria] = React.useState<Categoria | "">("");
   // Padrão do §7: "Quero concorrer à apresentação" é a opção padrão, exceto se a
   // pessoa já tinha escolhido "só e-book" na inscrição.
@@ -238,6 +242,8 @@ export function FormularioMostra({
   const validar = () => {
     const novos: Record<string, string | undefined> = {};
     if (!titulo.trim()) novos["titulo"] = MSG.titulo;
+    if (!autorNome.trim()) novos["autorNome"] = MSG.autorNome;
+    if (!cpfValido(autorCpf)) novos["autorCpf"] = MSG.autorCpf;
     if (!categoria) novos["categoria"] = MSG.categoria;
     if (!modo) novos["modo"] = MSG.modo;
     if (contribuicaoAutor.trim().length < 3) novos["contribuicaoAutor"] = MSG.contribuicaoAutor;
@@ -320,6 +326,8 @@ export function FormularioMostra({
       const { data, error } = await supabase.rpc("submeter_relato_mostra", {
         p_inscricao_id: sessao.inscricao_id,
         p_titulo: titulo.trim(),
+        p_autor_nome: autorNome.trim(),
+        p_autor_cpf: apenasDigitos(autorCpf),
         p_categoria: categoria as Categoria,
         p_modo: modo as Modo,
         p_docx_path: docxPath,
@@ -386,6 +394,52 @@ export function FormularioMostra({
 
   return (
     <form noValidate onSubmit={enviar} className="space-y-9">
+      <Bloco titulo="Dados de autoria">
+        <p className="medida text-base text-ferro">
+          Informe o nome e o CPF do autor responsável. Eles ficam registrados separadamente do
+          arquivo para manter a avaliação às cegas e evitar que os avaliadores identifiquem quem
+          escreveu o relato.
+        </p>
+
+        <div>
+          <label htmlFor="autor-nome" className={rotuloCampo}>
+            Nome completo do autor responsável
+          </label>
+          <input
+            id="autor-nome"
+            value={autorNome}
+            onChange={(e) => {
+              setAutorNome(e.target.value);
+              limpa("autorNome");
+            }}
+            aria-invalid={!!erros["autorNome"]}
+            aria-describedby={erros["autorNome"] ? "erro-autor-nome" : undefined}
+            className={`${campoBase} ${borda("autorNome")}`}
+          />
+          <Erro id="erro-autor-nome" texto={erros["autorNome"]} />
+        </div>
+
+        <div>
+          <label htmlFor="autor-cpf" className={rotuloCampo}>
+            CPF do autor responsável
+          </label>
+          <input
+            id="autor-cpf"
+            value={autorCpf}
+            inputMode="numeric"
+            placeholder="000.000.000-00"
+            onChange={(e) => {
+              setAutorCpf(mascaraCPF(e.target.value));
+              limpa("autorCpf");
+            }}
+            aria-invalid={!!erros["autorCpf"]}
+            aria-describedby={erros["autorCpf"] ? "erro-autor-cpf" : undefined}
+            className={`${campoBase} ${borda("autorCpf")}`}
+          />
+          <Erro id="erro-autor-cpf" texto={erros["autorCpf"]} />
+        </div>
+      </Bloco>
+
       <Bloco titulo="Sobre o relato">
         <div>
           <label htmlFor="titulo" className={rotuloCampo}>

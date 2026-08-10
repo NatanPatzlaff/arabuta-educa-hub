@@ -252,6 +252,8 @@ export type Database = {
           arquivo_docx_path: string
           arquivo_pdf_path: string | null
           autorizacao_imagem: boolean
+          autor_cpf: string
+          autor_nome: string
           categoria: Database["public"]["Enums"]["categoria_relato"]
           codigo: string
           contribuicao_autor_principal: string
@@ -273,6 +275,8 @@ export type Database = {
           arquivo_docx_path: string
           arquivo_pdf_path?: string | null
           autorizacao_imagem?: boolean
+          autor_cpf?: string
+          autor_nome?: string
           categoria: Database["public"]["Enums"]["categoria_relato"]
           codigo: string
           contribuicao_autor_principal?: string
@@ -294,6 +298,8 @@ export type Database = {
           arquivo_docx_path?: string
           arquivo_pdf_path?: string | null
           autorizacao_imagem?: boolean
+          autor_cpf?: string
+          autor_nome?: string
           categoria?: Database["public"]["Enums"]["categoria_relato"]
           codigo?: string
           contribuicao_autor_principal?: string
@@ -383,6 +389,8 @@ export type Database = {
       submeter_relato_mostra: {
         Args: {
           p_autorizacao: boolean
+          p_autor_cpf: string
+          p_autor_nome: string
           p_categoria: Database["public"]["Enums"]["categoria_relato"]
           p_coautores: Json
           p_contribuicao_autor_principal: string

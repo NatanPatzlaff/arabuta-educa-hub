@@ -112,10 +112,9 @@ export function Avaliacao() {
   const exportarAnonimo = () => {
     baixarCsv(
       "avaliacao-relatos-mostra-anonimo",
-      ["Código", "Título", "Categoria", "Enviado em"],
+      ["Código", "Categoria", "Enviado em"],
       relatos.map((r) => [
         r.codigo,
-        r.titulo,
         ROTULO_CATEGORIA[r.categoria] ?? r.categoria,
         dataHora(r.created_at),
       ]),
@@ -181,9 +180,9 @@ export function Avaliacao() {
     >
       <p className="medida max-w-[68ch] text-sm text-ferro">
         Só entram aqui os relatos habilitados que optaram por concorrer ("quero apresentar no
-        palco"). A lista exportada não tem nome de autor — é o que deve ir para os avaliadores
-        externos. As notas devolvidas por eles são lançadas manualmente abaixo, por código do
-        relato.
+        palco"). A lista exibida e o CSV não mostram título nem autoria — apenas o código do
+        relato, o documento e os critérios de avaliação para o parecer. As notas devolvidas por eles
+        são lançadas manualmente abaixo, por código do relato.
       </p>
 
       {erro && <p className="mt-4 text-sm font-semibold text-listel">{erro}</p>}
@@ -197,7 +196,6 @@ export function Avaliacao() {
             <tr>
               <th className={th}>#</th>
               <th className={th}>Código</th>
-              <th className={th}>Título</th>
               <th className={th}>Categoria</th>
               <th className={th}>Avaliações</th>
               <th className={th}>Nota final</th>
@@ -213,9 +211,6 @@ export function Avaliacao() {
                   {i === 5 && <span className="ml-2 text-xs font-semibold text-ferro">suplente</span>}
                 </td>
                 <td className={`${td} font-semibold`}>{l.relato.codigo}</td>
-                <td className={td}>
-                  <span className="block max-w-[38ch] whitespace-normal">{l.relato.titulo}</span>
-                </td>
                 <td className={td}>{ROTULO_CATEGORIA[l.relato.categoria] ?? l.relato.categoria}</td>
                 <td className={td}>{l.quantidade}</td>
                 <td className={`${td} font-semibold`}>
@@ -267,7 +262,7 @@ export function Avaliacao() {
               <option value="">Escolha o relato</option>
               {relatos.map((r) => (
                 <option key={r.id} value={r.id}>
-                  {r.codigo} — {r.titulo}
+                  {r.codigo}
                 </option>
               ))}
             </select>

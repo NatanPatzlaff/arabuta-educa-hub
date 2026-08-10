@@ -3,6 +3,8 @@
 export type SessaoRelato = {
   inscricao_id: string;
   primeiro_nome: string;
+  nome_completo?: string;
+  cpf?: string;
   pode_mostra: boolean;
   pode_proleei: boolean;
   nao_vai_enviar: boolean;

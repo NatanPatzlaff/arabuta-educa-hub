@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { campoAdmin, rotuloCampo } from "@/components/admin/base";
 
-const CHAVE_EMAIL = "summit-login-email";
+const EMAIL_ORGANIZACAO = "mariceliatdic@gmail.com";
 
 export function Login({
   aviso,
@@ -14,30 +14,20 @@ export function Login({
   titulo?: string;
   descricao?: string;
 }) {
-  const [email, setEmail] = React.useState("");
   const [senha, setSenha] = React.useState("");
   const [erro, setErro] = React.useState("");
   const [entrando, setEntrando] = React.useState(false);
-
-  React.useEffect(() => {
-    const salvo = window.localStorage.getItem(CHAVE_EMAIL);
-    if (salvo) setEmail(salvo);
-  }, []);
-
-  React.useEffect(() => {
-    window.localStorage.setItem(CHAVE_EMAIL, email);
-  }, [email]);
 
   const entrar = async (evento: React.FormEvent) => {
     evento.preventDefault();
     setErro("");
     setEntrando(true);
     const { error } = await supabase.auth.signInWithPassword({
-      email: email.trim(),
+      email: EMAIL_ORGANIZACAO,
       password: senha,
     });
     setEntrando(false);
-    if (error) setErro("E-mail ou senha não conferem.");
+    if (error) setErro("Senha incorreta.");
   };
 
   return (
@@ -56,19 +46,6 @@ export function Login({
         )}
 
         <form noValidate onSubmit={entrar} className="mt-5 space-y-4">
-          <div>
-            <label htmlFor="email" className={rotuloCampo}>
-              E-mail
-            </label>
-            <input
-              id="email"
-              type="email"
-              autoComplete="username"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={campoAdmin}
-            />
-          </div>
           <div>
             <label htmlFor="senha" className={rotuloCampo}>
               Senha

@@ -365,24 +365,6 @@ export function AvaliacaoRelatos() {
     };
   }, [acesso]);
 
-  if (acesso === "carregando") {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-neve">
-        <p className="text-sm text-ferro">Carregando...</p>
-      </main>
-    );
-  }
-
-  if (acesso === "deslogado") {
-    return (
-      <Login
-        aviso={aviso}
-        titulo="Avaliação dos relatos"
-        descricao="Entre com o acesso fornecido pela organização para avaliar os relatos."
-      />
-    );
-  }
-
   const nomeAtual = normalizarNome(avaliadorNome);
 
   const avaliadosPorAtual = React.useMemo(() => {
@@ -409,6 +391,24 @@ export function AvaliacaoRelatos() {
     if (error) return;
     setAvaliacoesMostra((data ?? []) as AvaliacaoMostra[]);
   }, []);
+
+  if (acesso === "carregando") {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-neve">
+        <p className="text-sm text-ferro">Carregando...</p>
+      </main>
+    );
+  }
+
+  if (acesso === "deslogado") {
+    return (
+      <Login
+        aviso={aviso}
+        titulo="Avaliação dos relatos"
+        descricao="Entre com o acesso fornecido pela organização para avaliar os relatos."
+      />
+    );
+  }
 
   return (
     <main className="min-h-screen bg-neve px-4 py-8 sm:px-6 lg:px-8">

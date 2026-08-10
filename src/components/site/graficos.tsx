@@ -29,19 +29,33 @@ export function RaiosDeSol({ className = "" }: { className?: string }) {
   );
 }
 
+/**
+ * Divisor de seções: livro aberto com as páginas virando pontos de uma rede — os dois
+ * temas do Summit (prática registrada e escrita + as pessoas que trocam entre si) num
+ * símbolo só. Mesma linguagem de traço dos outros gráficos do site.
+ */
 export function FolhaDivisor({ className = "" }: { className?: string }) {
   return (
     <div className={`flex items-center justify-center gap-4 ${className}`} aria-hidden="true">
       <span className="h-px w-16 bg-cinza sm:w-28" />
-      <svg viewBox="0 0 32 40" className="h-8 w-6 text-listel" fill="currentColor">
-        <path d="M16 2c8 6 12 13 12 20 0 8-5.4 14-12 16C9.4 36 4 30 4 22 4 15 8 8 16 2Z" opacity="0.9" />
-        <path d="M16 6v30" stroke="var(--background)" strokeWidth="1.5" fill="none" />
-        <path
-          d="M16 14 9 11M16 20l-8-3M16 16l7-3M16 23l7-3"
-          stroke="var(--background)"
-          strokeWidth="1.2"
-          fill="none"
-        />
+      <svg
+        viewBox="0 0 44 34"
+        className="h-8 w-11 text-listel"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {/* constelação saindo da lombada */}
+        <path d="M13 9 22 3l9 6" opacity="0.9" />
+        <circle cx="13" cy="9" r="1.8" fill="currentColor" stroke="none" />
+        <circle cx="22" cy="3" r="1.8" fill="currentColor" stroke="none" />
+        <circle cx="31" cy="9" r="1.8" fill="currentColor" stroke="none" />
+        {/* livro aberto */}
+        <path d="M22 17c-3.2-2.6-8-4-15-4v14c7 0 11.8 1.4 15 4" />
+        <path d="M22 17c3.2-2.6 8-4 15-4v14c-7 0-11.8 1.4-15 4" />
+        <path d="M22 17v14" />
       </svg>
       <span className="h-px w-16 bg-cinza sm:w-28" />
     </div>

@@ -13,15 +13,19 @@ export function EscudoHero() {
   return (
     <div className="escudo-track">
       <div className="escudo-pin">
-        <img
-          src="/brasao-arabuta.png"
-          alt="Brasão do município de Arabutã"
-          width={900}
-          height={1044}
-          fetchPriority="high"
-          decoding="async"
-          className="escudo-img"
-        />
+        {/* O halo é filho do wrapper da imagem (não do fundo do hero) pra ficar
+            grudado no escudo em qualquer estado do pin — grande, encolhido ou parado. */}
+        <span className="escudo-halo">
+          <img
+            src="/brasao-arabuta.png"
+            alt="Brasão do município de Arabutã"
+            width={900}
+            height={1044}
+            fetchPriority="high"
+            decoding="async"
+            className="escudo-img"
+          />
+        </span>
         <div className="escudo-conteudo mx-auto max-w-3xl text-center">
           <h1 className="mt-6 text-4xl leading-[1.05] tracking-tight sm:text-6xl">
             1º Summit de Educação de Arabutã

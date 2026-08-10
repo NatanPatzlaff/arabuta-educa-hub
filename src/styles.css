@@ -314,16 +314,18 @@
   }
 }
 
-/* Aurora de fundo do hero: dois blends radiais em vermelho, deriva lenta. */
+/*
+ * Aurora de fundo do hero: washes de borda (base e topo) que dão corpo ao fundo.
+ * O glow central mora em `escudo-halo`, grudado no escudo — aqui só o ambiente.
+ */
 @utility fundo-aurora {
   position: absolute;
   inset: -10%;
   z-index: 0;
   pointer-events: none;
   background-image:
-    radial-gradient(38rem 26rem at 18% 12%, oklch(0.52 0.19 27 / 38%), transparent 65%),
-    radial-gradient(32rem 24rem at 82% 78%, oklch(0.43 0.16 27 / 32%), transparent 68%),
-    radial-gradient(28rem 20rem at 78% 8%, oklch(0.84 0.165 88 / 12%), transparent 70%);
+    radial-gradient(60rem 34rem at 50% 108%, oklch(0.84 0.165 88 / 10%), transparent 70%),
+    radial-gradient(70rem 40rem at 50% -8%, oklch(0.52 0.19 27 / 12%), transparent 72%);
   filter: blur(2px);
   animation: aurora-deriva 26s ease-in-out infinite alternate;
 }
@@ -334,6 +336,25 @@
   }
   100% {
     transform: translate3d(-2%, 2%, 0) scale(1.06);
+  }
+}
+
+/* Flutuação sutil dos ícones de livro/rede no fundo do hero — parado sem preferência de movimento. */
+@utility particula-flutua {
+  @media (prefers-reduced-motion: no-preference) {
+    animation-name: particula-deriva;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+}
+
+@keyframes particula-deriva {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(6px, -26px) rotate(6deg);
   }
 }
 
@@ -371,9 +392,41 @@
   padding-block: 3.5rem;
 }
 
+/*
+ * Halo do escudo: glow radial centrado na própria imagem, em unidades fixas — segue
+ * o escudo durante o pin sem encolher junto com ele. Fica no fundo do stacking
+ * context criado pelo container do hero (z-index: 2), então não escapa pra trás do header.
+ */
+@utility escudo-halo {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: -1;
+    /* Em % do escudo (não em rem): o glow encolhe junto durante o pin. */
+    width: 240%;
+    height: 200%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    background-image:
+      radial-gradient(closest-side, oklch(0.52 0.19 27 / 34%), transparent 72%),
+      radial-gradient(closest-side, oklch(0.84 0.165 88 / 12%), transparent 60%);
+  }
+}
+
+/*
+ * O PNG do brasão já é line-art PB com fundo transparente — sem filtro de cor aqui.
+ * Só um leve brightness pra o branco não estourar contra o fundo escuro do hero.
+ */
 @utility escudo-img {
   width: min(38vw, 220px);
   height: auto;
+  filter: brightness(0.92);
 }
 
 @utility escudo-conteudo {
@@ -408,6 +461,7 @@
     }
 
     .escudo-conteudo {
+      overflow: hidden;
       opacity: 0;
       animation: escudo-texto-entra linear both;
       animation-timeline: --escudo-scroll;
@@ -431,12 +485,19 @@
   }
 }
 
+/*
+ * `max-height` colapsado no `from`: enquanto invisível, o bloco de texto não pode
+ * ocupar espaço no `justify-content: center` do `.escudo-pin` — senão o escudo fica
+ * puxado pra cima da tela na carga (a centralização soma a altura do texto invisível).
+ */
 @keyframes escudo-texto-entra {
   from {
+    max-height: 0;
     opacity: 0;
     transform: translateY(10px);
   }
   to {
+    max-height: 28rem;
     opacity: 1;
     transform: translateY(0);
   }

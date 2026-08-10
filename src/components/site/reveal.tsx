@@ -23,12 +23,16 @@ export function Reveal({
     if (!el) return;
     const obs = new IntersectionObserver(
       ([entry]) => {
-        if (entry?.isIntersecting) {
+        if (!entry) return;
+        // `top < 0` cobre o bloco que já passou da tela: com rolagem rápida (ou âncora
+        // direto pro meio da página) o elemento pode entrar e sair entre dois frames e
+        // nunca satisfazer o threshold — sem isso ele fica invisível pra sempre.
+        if (entry.isIntersecting || entry.boundingClientRect.top < 0) {
           setVisivel(true);
           obs.disconnect();
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
+      { threshold: 0, rootMargin: "0px 0px -40px 0px" },
     );
     obs.observe(el);
     return () => obs.disconnect();

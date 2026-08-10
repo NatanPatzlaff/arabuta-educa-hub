@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Award, BookOpen, Mic, TriangleAlert, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FolhaDivisor, OndaJacutinga, RaiosDeSol } from "@/components/site/graficos";
+import { FolhaDivisor, OndaJacutinga } from "@/components/site/graficos";
 import { BarraFixa } from "@/components/site/barra-fixa";
 import { ConsultaCpf } from "@/components/site/consulta-cpf";
 import { FundoHero } from "@/components/site/fundo-hero";
+import { ParticulasHero } from "@/components/site/particulas-hero";
 import { EscudoHero } from "@/components/site/escudo-hero";
 import { Reveal } from "@/components/site/reveal";
 
@@ -133,14 +134,22 @@ function Index() {
       {/* 1. HERO */}
       <header
         id="hero"
-        className="relative w-full bg-tinta pb-16 pt-14 text-tinta-foreground sm:pt-20"
+        className="relative w-full bg-tinta pb-16 text-tinta-foreground"
       >
         {/* overflow-hidden isolado aqui (não no header): um header com overflow-hidden
             vira "scroll container" para efeitos de view-timeline, o que quebra o pin
-            do EscudoHero (ver memoria.md, 08/08/2026). */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <FundoHero />
-          <RaiosDeSol className="absolute -top-6 left-1/2 z-[1] h-16 w-56 -translate-x-1/2 text-sol/60" />
+            do EscudoHero (ver memoria.md, 08/08/2026).
+            O header tem ~200vh (trilho do pin), então uma camada `absolute inset-0`
+            rolaria embora e desencontraria do escudo pinado. O wrapper externo fica
+            fora do fluxo (não empurra nem sobrepõe as seções seguintes) e o filho
+            sticky trava a camada no viewport junto com o escudo. O overflow-hidden
+            mora no próprio elemento sticky — num ancestral ele viraria scroll
+            container e mataria tanto o sticky quanto a view-timeline do pin. */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="sticky top-0 h-svh overflow-hidden">
+            <FundoHero />
+            <ParticulasHero />
+          </div>
         </div>
         <div className="container-site relative z-[2]">
           <EscudoHero />
@@ -257,7 +266,12 @@ function Index() {
                 key={texto}
                 className={`${cell("branco", true)} flex flex-col justify-center gap-3 lg:col-span-2`}
               >
-                <Icone aria-hidden="true" className="h-6 w-6 shrink-0 text-listel" />
+                <span
+                  aria-hidden="true"
+                  className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-sol-suave text-listel"
+                >
+                  <Icone className="h-5 w-5" />
+                </span>
                 <span className="text-base font-medium leading-snug text-tinta">{texto}</span>
               </div>
             ))}
@@ -448,7 +462,10 @@ function Index() {
           <Reveal as="div" className="text-center">
             <h2 className="text-2xl text-tinta sm:text-3xl">Datas importantes</h2>
           </Reveal>
-          <ol className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-5 md:gap-4">
+          {/* Trilho contínuo atrás dos marcos (só no desktop, onde as datas ficam lado a
+              lado): sem ele os pontos ficam soltos e a sequência não se lê como linha
+              do tempo. `before` é o trilho; cada marco tampa a própria fatia com o fundo. */}
+          <ol className="relative mt-10 grid grid-cols-1 gap-6 md:grid-cols-5 md:gap-4 md:before:absolute md:before:inset-x-[10%] md:before:top-5 md:before:h-px md:before:bg-cinza">
             {datas.map((d) => {
               const destaque = d.dia === "23/08";
               return (
@@ -456,12 +473,15 @@ function Index() {
                   key={d.dia}
                   className={
                     destaque
-                      ? "flex items-center gap-4 rounded-xl bg-tinta p-4 sombra-card transition-transform duration-300 hover:-translate-y-1 md:flex-col md:text-center"
-                      : "flex items-center gap-4 rounded-xl p-4 transition-transform duration-300 hover:-translate-y-1 md:flex-col md:text-center"
+                      ? "relative flex items-center gap-4 rounded-xl bg-tinta p-4 sombra-card transition-transform duration-300 hover:-translate-y-1 md:flex-col md:text-center"
+                      : "relative flex items-center gap-4 rounded-xl p-4 transition-transform duration-300 hover:-translate-y-1 md:flex-col md:text-center"
                   }
                 >
                   {!destaque && (
-                    <span aria-hidden="true" className="hidden h-2 w-2 rounded-full bg-listel md:block" />
+                    <span
+                      aria-hidden="true"
+                      className="hidden h-2 w-2 rounded-full bg-listel ring-4 ring-background md:block"
+                    />
                   )}
                   <span
                     className={

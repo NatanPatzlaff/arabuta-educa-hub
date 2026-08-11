@@ -31,7 +31,7 @@ export function EscudoHero() {
             1º Summit de Educação de Arabutã
           </h1>
           <p className="mt-3 text-sm font-semibold uppercase tracking-wide text-tinta-foreground/60">
-            2º Seminário Municipal ProLEEI
+            2º Seminário ProLEEI
           </p>
           <p className="epigrafe mt-6 text-lg text-tinta-foreground/90 sm:text-xl">
             Encontro de pessoas, práticas e ideias que movimentam a educação

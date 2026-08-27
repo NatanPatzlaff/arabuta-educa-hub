@@ -83,7 +83,6 @@ export function Avaliacao() {
           .from("relatos_mostra")
           .select("id, codigo, titulo, categoria, arquivo_docx_path, arquivo_pdf_path, created_at")
           .eq("modo_participacao", "palco")
-          .eq("status_habilitacao", "habilitado")
           .order("created_at", { ascending: true }),
         supabase.from("avaliacoes_mostra").select("*"),
       ]);
@@ -202,7 +201,7 @@ export function Avaliacao() {
       }
     >
       <p className="medida max-w-[68ch] text-sm text-ferro">
-        Só entram aqui os relatos habilitados que optaram por concorrer ("quero apresentar no
+        Só entram aqui os relatos que optaram por concorrer ("quero apresentar no
         palco"). A lista exibida e o CSV não mostram título nem autoria — apenas o código do
         relato, o documento e os critérios de avaliação para o parecer. As notas devolvidas por eles
         são lançadas manualmente abaixo, por código do relato.
@@ -272,7 +271,7 @@ export function Avaliacao() {
             {!carregando && ranking.length === 0 && (
               <tr>
                 <td className={`${td} text-ferro`} colSpan={7}>
-                  Nenhum relato habilitado concorrendo ao palco até agora.
+                  Nenhum relato concorrendo ao palco até agora.
                 </td>
               </tr>
             )}

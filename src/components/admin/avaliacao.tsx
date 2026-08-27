@@ -38,6 +38,28 @@ function notaTotal(a: Avaliacao): number {
   );
 }
 
+function ListaAvaliacoes({ avaliacoes }: { avaliacoes: Avaliacao[] }) {
+  if (avaliacoes.length === 0) {
+    return <p className="text-sm text-ferro">Nenhuma avaliação lançada para este relato ainda.</p>;
+  }
+  return (
+    <ul className="space-y-2">
+      {avaliacoes.map((a) => (
+        <li key={a.id} className="rounded-lg border border-cinza p-2 text-sm">
+          <p className="font-semibold text-tinta">
+            {a.avaliador_nome} — total {notaTotal(a).toFixed(1)}
+          </p>
+          <p className="text-ferro">
+            {CRITERIOS.map((c) => `${c.rotulo}: ${a[c.chave]}`).join(" · ")}
+          </p>
+          {a.observacao && <p className="mt-1 italic text-tinta">"{a.observacao}"</p>}
+          <p className="text-xs text-ferro">{dataHora(a.criado_em)}</p>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function Avaliacao() {
   const [relatos, setRelatos] = React.useState<RelatoPalco[]>([]);
   const [avaliacoes, setAvaliacoes] = React.useState<Avaliacao[]>([]);
@@ -50,6 +72,7 @@ export function Avaliacao() {
   const [observacao, setObservacao] = React.useState("");
   const [salvando, setSalvando] = React.useState(false);
   const [erroForm, setErroForm] = React.useState("");
+  const [aberto, setAberto] = React.useState<string | null>(null);
 
   const carregar = React.useCallback(async () => {
     setCarregando(true);
@@ -200,31 +223,51 @@ export function Avaliacao() {
               <th className={th}>Avaliações</th>
               <th className={th}>Nota final</th>
               <th className={th}>Arquivos</th>
+              <th className={th}>Notas</th>
             </tr>
           </thead>
           <tbody>
             {ranking.map((l, i) => (
-              <tr key={l.relato.id} className={i < 5 ? "bg-sol-suave/40" : i === 5 ? "bg-neve" : ""}>
-                <td className={`${td} font-semibold`}>
-                  {i + 1}
-                  {i < 5 && <span className="ml-2 text-xs font-semibold text-sol-foreground">palco</span>}
-                  {i === 5 && <span className="ml-2 text-xs font-semibold text-ferro">suplente</span>}
-                </td>
-                <td className={`${td} font-semibold`}>{l.relato.codigo}</td>
-                <td className={td}>{ROTULO_CATEGORIA[l.relato.categoria] ?? l.relato.categoria}</td>
-                <td className={td}>{l.quantidade}</td>
-                <td className={`${td} font-semibold`}>
-                  {l.quantidade > 0 ? l.notaFinal.toFixed(1) : "—"}
-                </td>
-                <td className={td}>
-                  <div className="flex flex-col gap-1">
-                    <LinkArquivo bucket="relatos" caminho={l.relato.arquivo_docx_path} rotulo="Word" />
-                    {l.relato.arquivo_pdf_path && (
-                      <LinkArquivo bucket="relatos" caminho={l.relato.arquivo_pdf_path} rotulo="PDF" />
-                    )}
-                  </div>
-                </td>
-              </tr>
+              <React.Fragment key={l.relato.id}>
+                <tr className={i < 5 ? "bg-sol-suave/40" : i === 5 ? "bg-neve" : ""}>
+                  <td className={`${td} font-semibold`}>
+                    {i + 1}
+                    {i < 5 && <span className="ml-2 text-xs font-semibold text-sol-foreground">palco</span>}
+                    {i === 5 && <span className="ml-2 text-xs font-semibold text-ferro">suplente</span>}
+                  </td>
+                  <td className={`${td} font-semibold`}>{l.relato.codigo}</td>
+                  <td className={td}>{ROTULO_CATEGORIA[l.relato.categoria] ?? l.relato.categoria}</td>
+                  <td className={td}>{l.quantidade}</td>
+                  <td className={`${td} font-semibold`}>
+                    {l.quantidade > 0 ? l.notaFinal.toFixed(1) : "—"}
+                  </td>
+                  <td className={td}>
+                    <div className="flex flex-col gap-1">
+                      <LinkArquivo bucket="relatos" caminho={l.relato.arquivo_docx_path} rotulo="Word" />
+                      {l.relato.arquivo_pdf_path && (
+                        <LinkArquivo bucket="relatos" caminho={l.relato.arquivo_pdf_path} rotulo="PDF" />
+                      )}
+                    </div>
+                  </td>
+                  <td className={td}>
+                    <button
+                      type="button"
+                      aria-expanded={aberto === l.relato.id}
+                      onClick={() => setAberto((a) => (a === l.relato.id ? null : l.relato.id))}
+                      className="text-sm font-semibold text-listel underline underline-offset-4 hover:text-listel-forte"
+                    >
+                      {aberto === l.relato.id ? "ocultar" : "ver notas"}
+                    </button>
+                  </td>
+                </tr>
+                {aberto === l.relato.id && (
+                  <tr>
+                    <td className={td} colSpan={7}>
+                      <ListaAvaliacoes avaliacoes={avaliacoesPorRelato.get(l.relato.id) ?? []} />
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
             ))}
             {!carregando && ranking.length === 0 && (
               <tr>

@@ -9,8 +9,17 @@ import {
   dataHora,
   mascaraCpfExibicao,
 } from "@/lib/admin-formatos";
+import type { Database } from "@/integrations/supabase/types";
 
 type Coautor = { nome: string; cpf: string; email: string; contribuicao: string; ordem: number };
+type StatusHabilitacao = Database["public"]["Enums"]["status_habilitacao"];
+
+const ROTULO_STATUS: Record<StatusHabilitacao, string> = {
+  nao_avaliado: "Não avaliado",
+  habilitado: "Habilitado",
+  pendente_correcao: "Pendente de correção",
+  inabilitado: "Inabilitado",
+};
 
 type RelatoMostra = {
   id: string;
@@ -18,6 +27,7 @@ type RelatoMostra = {
   titulo: string;
   categoria: string;
   modo_participacao: string;
+  status_habilitacao: StatusHabilitacao;
   created_at: string;
   inscricao_id: string;
   autor_nome: string;
@@ -36,6 +46,7 @@ type RelatoProleei = {
   codigo: string;
   nome_unidade: string;
   titulo: string;
+  status_habilitacao: StatusHabilitacao;
   created_at: string;
   inscricao_id: string;
   arquivo_docx_path: string;
@@ -96,9 +107,38 @@ function Arquivos({
   );
 }
 
+function SeletorHabilitacao({
+  status,
+  disabled,
+  onAlterar,
+}: {
+  status: StatusHabilitacao;
+  disabled: boolean;
+  onAlterar: (status: StatusHabilitacao) => void;
+}) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <Selo texto={ROTULO_STATUS[status]} />
+      <select
+        value={status}
+        disabled={disabled}
+        onChange={(e) => onAlterar(e.target.value as StatusHabilitacao)}
+        className="h-8 rounded-lg border border-cinza bg-background px-2 text-xs text-tinta outline-none focus:border-tinta"
+      >
+        {(Object.keys(ROTULO_STATUS) as StatusHabilitacao[]).map((s) => (
+          <option key={s} value={s}>
+            {ROTULO_STATUS[s]}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
 function AbaMostra() {
   const [linhas, setLinhas] = React.useState<RelatoMostra[]>([]);
   const [carregando, setCarregando] = React.useState(true);
+  const [alterando, setAlterando] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     let ativo = true;
@@ -106,7 +146,7 @@ function AbaMostra() {
       const { data } = await supabase
         .from("relatos_mostra")
         .select(
-          "id, codigo, titulo, categoria, modo_participacao, created_at, inscricao_id, autor_nome, autor_cpf, arquivo_docx_path, arquivo_pdf_path, imagens, inscricoes(nome_completo, email, cpf), coautores(nome, cpf, email, contribuicao, ordem)",
+          "id, codigo, titulo, categoria, modo_participacao, status_habilitacao, created_at, inscricao_id, autor_nome, autor_cpf, arquivo_docx_path, arquivo_pdf_path, imagens, inscricoes(nome_completo, email, cpf), coautores(nome, cpf, email, contribuicao, ordem)",
         )
         .order("created_at", { ascending: false });
       if (!ativo) return;
@@ -119,6 +159,18 @@ function AbaMostra() {
   }, []);
 
   const ordinais = React.useMemo(() => ordinalPorAutor(linhas), [linhas]);
+
+  const alterarStatus = async (id: string, status: StatusHabilitacao) => {
+    setAlterando(id);
+    const { error } = await supabase
+      .from("relatos_mostra")
+      .update({ status_habilitacao: status })
+      .eq("id", id);
+    if (!error) {
+      setLinhas((atual) => atual.map((r) => (r.id === id ? { ...r, status_habilitacao: status } : r)));
+    }
+    setAlterando(null);
+  };
 
   const exportar = () => {
     baixarCsv(
@@ -176,6 +228,7 @@ function AbaMostra() {
               <th className={th}>Participação</th>
               <th className={th}>Envio</th>
               <th className={th}>Arquivos</th>
+              <th className={th}>Habilitação</th>
             </tr>
           </thead>
           <tbody>
@@ -200,18 +253,25 @@ function AbaMostra() {
                 <td className={td}>
                   <Arquivos docx={r.arquivo_docx_path} pdf={r.arquivo_pdf_path} imagens={r.imagens} />
                 </td>
+                <td className={td}>
+                  <SeletorHabilitacao
+                    status={r.status_habilitacao}
+                    disabled={alterando === r.id}
+                    onAlterar={(status) => void alterarStatus(r.id, status)}
+                  />
+                </td>
               </tr>
             ))}
             {!carregando && linhas.length === 0 && (
               <tr>
-                <td className={`${td} text-ferro`} colSpan={8}>
+                <td className={`${td} text-ferro`} colSpan={9}>
                   Nenhum relato da Mostra recebido até agora.
                 </td>
               </tr>
             )}
             {carregando && (
               <tr>
-                <td className={`${td} text-ferro`} colSpan={8}>
+                <td className={`${td} text-ferro`} colSpan={9}>
                   Carregando...
                 </td>
               </tr>
@@ -227,6 +287,7 @@ function AbaProleei() {
   const [linhas, setLinhas] = React.useState<RelatoProleei[]>([]);
   const [carregando, setCarregando] = React.useState(true);
   const [aberta, setAberta] = React.useState<string | null>(null);
+  const [alterando, setAlterando] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     let ativo = true;
@@ -234,7 +295,7 @@ function AbaProleei() {
       const { data } = await supabase
         .from("relatos_proleei")
         .select(
-          "id, codigo, nome_unidade, titulo, created_at, inscricao_id, arquivo_docx_path, imagens, inscricoes(nome_completo, email), participantes_proleei(nome_completo, cpf)",
+          "id, codigo, nome_unidade, titulo, status_habilitacao, created_at, inscricao_id, arquivo_docx_path, imagens, inscricoes(nome_completo, email), participantes_proleei(nome_completo, cpf)",
         )
         .order("created_at", { ascending: false });
       if (!ativo) return;
@@ -247,6 +308,18 @@ function AbaProleei() {
   }, []);
 
   const ordinais = React.useMemo(() => ordinalPorAutor(linhas), [linhas]);
+
+  const alterarStatus = async (id: string, status: StatusHabilitacao) => {
+    setAlterando(id);
+    const { error } = await supabase
+      .from("relatos_proleei")
+      .update({ status_habilitacao: status })
+      .eq("id", id);
+    if (!error) {
+      setLinhas((atual) => atual.map((r) => (r.id === id ? { ...r, status_habilitacao: status } : r)));
+    }
+    setAlterando(null);
+  };
 
   const exportar = () => {
     baixarCsv(
@@ -298,6 +371,7 @@ function AbaProleei() {
               <th className={th}>Participantes</th>
               <th className={th}>Envio</th>
               <th className={th}>Arquivos</th>
+              <th className={th}>Habilitação</th>
             </tr>
           </thead>
           <tbody>
@@ -329,10 +403,17 @@ function AbaProleei() {
                   <td className={td}>
                     <Arquivos docx={r.arquivo_docx_path} imagens={r.imagens} />
                   </td>
+                  <td className={td}>
+                    <SeletorHabilitacao
+                      status={r.status_habilitacao}
+                      disabled={alterando === r.id}
+                      onAlterar={(status) => void alterarStatus(r.id, status)}
+                    />
+                  </td>
                 </tr>
                 {aberta === r.id && (
                   <tr>
-                    <td className={td} colSpan={7}>
+                    <td className={td} colSpan={8}>
                       <ul className="space-y-1">
                         {r.participantes_proleei.map((p, i) => (
                           <li key={`${r.id}-${i}`} className="text-sm text-tinta">
@@ -347,14 +428,14 @@ function AbaProleei() {
             ))}
             {!carregando && linhas.length === 0 && (
               <tr>
-                <td className={`${td} text-ferro`} colSpan={7}>
+                <td className={`${td} text-ferro`} colSpan={8}>
                   Nenhum relato do ProLEEI recebido até agora.
                 </td>
               </tr>
             )}
             {carregando && (
               <tr>
-                <td className={`${td} text-ferro`} colSpan={7}>
+                <td className={`${td} text-ferro`} colSpan={8}>
                   Carregando...
                 </td>
               </tr>

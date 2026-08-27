@@ -340,6 +340,7 @@ export type Database = {
           imagens: string[]
           inscricao_id: string
           nome_unidade: string
+          status_habilitacao: Database["public"]["Enums"]["status_habilitacao"]
           titulo: string
         }
         Insert: {
@@ -354,6 +355,7 @@ export type Database = {
           imagens?: string[]
           inscricao_id: string
           nome_unidade: string
+          status_habilitacao?: Database["public"]["Enums"]["status_habilitacao"]
           titulo: string
         }
         Update: {
@@ -368,6 +370,7 @@ export type Database = {
           imagens?: string[]
           inscricao_id?: string
           nome_unidade?: string
+          status_habilitacao?: Database["public"]["Enums"]["status_habilitacao"]
           titulo?: string
         }
         Relationships: [

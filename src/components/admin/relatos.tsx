@@ -41,6 +41,16 @@ type RelatoMostra = {
 
 type Participante = { nome_completo: string; cpf: string };
 
+const DURACAO_LINK_PLANILHA = 60 * 60 * 24 * 7;
+
+async function linkTemporario(bucket: string, caminho: string | null | undefined): Promise<string> {
+  if (!caminho) return "";
+  const { data } = await supabase.storage
+    .from(bucket)
+    .createSignedUrl(caminho, DURACAO_LINK_PLANILHA);
+  return data?.signedUrl ?? "";
+}
+
 type RelatoProleei = {
   id: string;
   codigo: string;
@@ -139,6 +149,7 @@ function AbaMostra() {
   const [linhas, setLinhas] = React.useState<RelatoMostra[]>([]);
   const [carregando, setCarregando] = React.useState(true);
   const [alterando, setAlterando] = React.useState<string | null>(null);
+  const [exportando, setExportando] = React.useState(false);
 
   React.useEffect(() => {
     let ativo = true;
@@ -172,7 +183,17 @@ function AbaMostra() {
     setAlterando(null);
   };
 
-  const exportar = () => {
+  const exportar = async () => {
+    setExportando(true);
+    const arquivos = await Promise.all(
+      linhas.map(async (r) => ({
+        word: await linkTemporario("relatos", r.arquivo_docx_path),
+        pdf: await linkTemporario("relatos", r.arquivo_pdf_path),
+        imagens: await Promise.all(
+          r.imagens.map((caminho) => linkTemporario("imagens-relatos", caminho)),
+        ),
+      })),
+    );
     baixarCsv(
       "relatos-mostra",
       [
@@ -185,9 +206,13 @@ function AbaMostra() {
         "Coautores",
         "CPF dos coautores",
         "Opção de participação",
+        "Situação do relato",
+        "Link do Word",
+        "Link do PDF",
+        "Links das imagens",
         "Envio",
       ],
-      linhas.map((r) => [
+      linhas.map((r, indice) => [
         r.codigo,
         r.titulo,
         ROTULO_CATEGORIA[r.categoria] ?? r.categoria,
@@ -200,9 +225,14 @@ function AbaMostra() {
           .map((c) => mascaraCpfExibicao(c.cpf))
           .join("; "),
         ROTULO_MODO[r.modo_participacao] ?? r.modo_participacao,
+        ROTULO_STATUS[r.status_habilitacao],
+        arquivos[indice].word,
+        arquivos[indice].pdf,
+        arquivos[indice].imagens.filter(Boolean).join("; "),
         dataHora(r.created_at),
       ]),
     );
+    setExportando(false);
   };
 
   return (
@@ -211,10 +241,21 @@ function AbaMostra() {
         <p className="text-sm font-semibold text-ferro">
           Mostrando {linhas.length} {linhas.length === 1 ? "relato" : "relatos"}
         </p>
-        <Button size="sm" variant="acao" onClick={exportar} disabled={linhas.length === 0}>
-          Exportar CSV
+        <Button
+          size="sm"
+          variant="acao"
+          onClick={() => void exportar()}
+          disabled={linhas.length === 0 || exportando}
+        >
+          {exportando ? "Gerando links..." : "Baixar planilha com nomes e arquivos (CSV)"}
         </Button>
       </div>
+
+      <p className="mt-2 text-sm text-ferro">
+        A lista para o e-book traz o título, o autor responsável, os coautores e a situação de
+        cada relato, com links para baixar Word, PDF e imagens. Por segurança, os links da
+        planilha ficam disponíveis por 7 dias.
+      </p>
 
       <div className="mt-3">
         <Rolagem>
@@ -288,6 +329,7 @@ function AbaProleei() {
   const [carregando, setCarregando] = React.useState(true);
   const [aberta, setAberta] = React.useState<string | null>(null);
   const [alterando, setAlterando] = React.useState<string | null>(null);
+  const [exportando, setExportando] = React.useState(false);
 
   React.useEffect(() => {
     let ativo = true;
@@ -321,7 +363,16 @@ function AbaProleei() {
     setAlterando(null);
   };
 
-  const exportar = () => {
+  const exportar = async () => {
+    setExportando(true);
+    const arquivos = await Promise.all(
+      linhas.map(async (r) => ({
+        word: await linkTemporario("relatos", r.arquivo_docx_path),
+        imagens: await Promise.all(
+          r.imagens.map((caminho) => linkTemporario("imagens-relatos", caminho)),
+        ),
+      })),
+    );
     baixarCsv(
       "relatos-proleei",
       [
@@ -333,9 +384,12 @@ function AbaProleei() {
         "Participantes",
         "Nomes dos participantes",
         "CPF dos participantes",
+        "Situação do relato",
+        "Link do Word",
+        "Links das imagens",
         "Envio",
       ],
-      linhas.map((r) => [
+      linhas.map((r, indice) => [
         r.codigo,
         r.nome_unidade,
         r.titulo,
@@ -344,9 +398,13 @@ function AbaProleei() {
         r.participantes_proleei.length,
         r.participantes_proleei.map((p) => p.nome_completo).join("; "),
         r.participantes_proleei.map((p) => mascaraCpfExibicao(p.cpf)).join("; "),
+        ROTULO_STATUS[r.status_habilitacao],
+        arquivos[indice].word,
+        arquivos[indice].imagens.filter(Boolean).join("; "),
         dataHora(r.created_at),
       ]),
     );
+    setExportando(false);
   };
 
   return (
@@ -355,10 +413,21 @@ function AbaProleei() {
         <p className="text-sm font-semibold text-ferro">
           Mostrando {linhas.length} {linhas.length === 1 ? "relato" : "relatos"}
         </p>
-        <Button size="sm" variant="acao" onClick={exportar} disabled={linhas.length === 0}>
-          Exportar CSV
+        <Button
+          size="sm"
+          variant="acao"
+          onClick={() => void exportar()}
+          disabled={linhas.length === 0 || exportando}
+        >
+          {exportando ? "Gerando links..." : "Baixar planilha com nomes e arquivos (CSV)"}
         </Button>
       </div>
+
+      <p className="mt-2 text-sm text-ferro">
+        A lista para o e-book traz a unidade, o responsável pelo envio, todos os participantes e
+        a situação de cada relato, com links para baixar o documento e as imagens. Por segurança,
+        os links da planilha ficam disponíveis por 7 dias.
+      </p>
 
       <div className="mt-3">
         <Rolagem>

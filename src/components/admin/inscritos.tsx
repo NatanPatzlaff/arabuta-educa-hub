@@ -206,7 +206,7 @@ export function ListaInscritos() {
             {mostrarCpf ? "Ocultar CPF" : "Mostrar CPF"}
           </Button>
           <Button size="sm" variant="acao" onClick={exportar} disabled={filtradas.length === 0}>
-            Exportar CSV
+            Baixar lista de inscritos (CSV)
           </Button>
         </>
       }

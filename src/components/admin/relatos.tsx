@@ -226,9 +226,9 @@ function AbaMostra() {
           .join("; "),
         ROTULO_MODO[r.modo_participacao] ?? r.modo_participacao,
         ROTULO_STATUS[r.status_habilitacao],
-        arquivos[indice].word,
-        arquivos[indice].pdf,
-        arquivos[indice].imagens.filter(Boolean).join("; "),
+        arquivos[indice]?.word ?? "",
+        arquivos[indice]?.pdf ?? "",
+        (arquivos[indice]?.imagens ?? []).filter(Boolean).join("; "),
         dataHora(r.created_at),
       ]),
     );
@@ -399,8 +399,8 @@ function AbaProleei() {
         r.participantes_proleei.map((p) => p.nome_completo).join("; "),
         r.participantes_proleei.map((p) => mascaraCpfExibicao(p.cpf)).join("; "),
         ROTULO_STATUS[r.status_habilitacao],
-        arquivos[indice].word,
-        arquivos[indice].imagens.filter(Boolean).join("; "),
+        arquivos[indice]?.word ?? "",
+        (arquivos[indice]?.imagens ?? []).filter(Boolean).join("; "),
         dataHora(r.created_at),
       ]),
     );

@@ -1,5 +1,4 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getRequest } from "@tanstack/react-start/server";
 import { apenasDigitos, cpfValido } from "@/lib/formatos";
 
 export type ConsultaResposta =
@@ -29,27 +28,10 @@ export const consultarInscricao = createServerFn({ method: "POST" })
     const cpf = apenasDigitos(data.cpf);
     if (!cpfValido(cpf)) return { erro: "cpf_invalido" };
 
-    const cabecalhos = getRequest().headers;
-    const ip = (
-      cabecalhos.get("cf-connecting-ip") ||
-      cabecalhos.get("x-forwarded-for")?.split(",")[0] ||
-      cabecalhos.get("x-real-ip") ||
-      "desconhecido"
-    ).trim();
-
     try {
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-
-      await supabaseAdmin.from("consultas_cpf").insert({ ip });
-
-      const desde = new Date(Date.now() - 15 * 60 * 1000).toISOString();
-      const { count } = await supabaseAdmin
-        .from("consultas_cpf")
-        .select("id", { count: "exact", head: true })
-        .eq("ip", ip)
-        .gte("criado_em", desde);
-
-      if ((count ?? 0) > 10) return { erro: "muitas_tentativas" };
+      const { limiteConsultasExcedido } = await import("@/lib/limite-consultas.server");
+      if (await limiteConsultasExcedido()) return { erro: "muitas_tentativas" };
 
       const { data: inscricao, error } = await supabaseAdmin
         .from("inscricoes")

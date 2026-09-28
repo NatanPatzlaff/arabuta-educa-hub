@@ -8,6 +8,7 @@ import { Contadores } from "@/components/admin/contadores";
 import { ListaInscritos } from "@/components/admin/inscritos";
 import { ListaPresencas } from "@/components/admin/presencas";
 import { ListaRelatos } from "@/components/admin/relatos";
+import { Certificados } from "@/components/admin/certificados";
 
 const DESC = "Área da comissão organizadora do Summit de Educação de Arabutã.";
 
@@ -102,6 +103,7 @@ function PaginaAdmin() {
         <ListaPresencas />
         <ListaRelatos />
         <Avaliacao />
+        <Certificados />
       </main>
     </div>
   );

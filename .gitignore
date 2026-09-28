@@ -30,3 +30,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Certificados separados (contêm CPF) — não versionar
+certificados-separados/
+/*.pdf

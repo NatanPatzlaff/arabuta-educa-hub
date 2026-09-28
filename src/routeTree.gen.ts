@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AvaliacaoRouteImport } from './routes/avaliacao'
+import { Route as CertificadoRouteImport } from './routes/certificado'
 import { Route as InscricaoRouteImport } from './routes/inscricao'
 import { Route as PresencaRouteImport } from './routes/presenca'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
@@ -31,6 +32,11 @@ const AdminRoute = AdminRouteImport.update({
 const AvaliacaoRoute = AvaliacaoRouteImport.update({
   id: '/avaliacao',
   path: '/avaliacao',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CertificadoRoute = CertificadoRouteImport.update({
+  id: '/certificado',
+  path: '/certificado',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InscricaoRoute = InscricaoRouteImport.update({
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/avaliacao': typeof AvaliacaoRoute
+  '/certificado': typeof CertificadoRoute
   '/inscricao': typeof InscricaoRoute
   '/presenca': typeof PresencaRoute
   '/privacidade': typeof PrivacidadeRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/avaliacao': typeof AvaliacaoRoute
+  '/certificado': typeof CertificadoRoute
   '/inscricao': typeof InscricaoRoute
   '/presenca': typeof PresencaRoute
   '/privacidade': typeof PrivacidadeRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/avaliacao': typeof AvaliacaoRoute
+  '/certificado': typeof CertificadoRoute
   '/inscricao': typeof InscricaoRoute
   '/presenca': typeof PresencaRoute
   '/privacidade': typeof PrivacidadeRoute
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/avaliacao'
+    | '/certificado'
     | '/inscricao'
     | '/presenca'
     | '/privacidade'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/avaliacao'
+    | '/certificado'
     | '/inscricao'
     | '/presenca'
     | '/privacidade'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/avaliacao'
+    | '/certificado'
     | '/inscricao'
     | '/presenca'
     | '/privacidade'
@@ -127,6 +139,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   AvaliacaoRoute: typeof AvaliacaoRoute
+  CertificadoRoute: typeof CertificadoRoute
   InscricaoRoute: typeof InscricaoRoute
   PresencaRoute: typeof PresencaRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/avaliacao'
       fullPath: '/avaliacao'
       preLoaderRoute: typeof AvaliacaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/certificado': {
+      id: '/certificado'
+      path: '/certificado'
+      fullPath: '/certificado'
+      preLoaderRoute: typeof CertificadoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inscricao': {
@@ -199,6 +219,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   AvaliacaoRoute: AvaliacaoRoute,
+  CertificadoRoute: CertificadoRoute,
   InscricaoRoute: InscricaoRoute,
   PresencaRoute: PresencaRoute,
   PrivacidadeRoute: PrivacidadeRoute,
